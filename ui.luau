@@ -59,7 +59,7 @@ function Library:CreateMain(Options)
     BackgroundColor3 = Themes.Background,
     BorderSizePixel = 0,
     Position = UDim2.new(0.5, -240, 0.5, -180),  -- <== SỬA THÀNH CÁI NÀY
-    Size = UDim2.new(0, 480, 0, 360),
+    Size = UDim2.new(0, 450, 0, 300),
 })
 
 	table.insert(Objects.Background, Main.Motherframe)
