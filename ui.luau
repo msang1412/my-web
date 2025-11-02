@@ -55,12 +55,12 @@ function Library:CreateMain(Options)
 	})
 
 	Main.Motherframe = Library:Create("Frame", {
-		Name = "Motherframe",
-		BackgroundColor3 = Themes.Background,
-		BorderSizePixel = 0,
-		Position = UDim2.new(0.5, -400, 0.5, -225),
-		Size = UDim2.new(0, 480, 0, 360),
-	})
+    Name = "Motherframe",
+    BackgroundColor3 = Themes.Background,
+    BorderSizePixel = 0,
+    Position = UDim2.new(0.5, -240, 0.5, -180),  -- <== SỬA THÀNH CÁI NÀY
+    Size = UDim2.new(0, 480, 0, 360),
+})
 
 	table.insert(Objects.Background, Main.Motherframe)
 
