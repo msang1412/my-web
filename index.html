@@ -202,14 +202,14 @@
                         <input type="checkbox" id="rememberMe">
                         Ghi nhớ đăng nhập
                     </label>
-                    <a href="#" class="forgot-link" onclick="showForm('forgotForm')">Quên mật khẩu?</a>
+                    <a href="#forgot-password" class="forgot-link">Quên mật khẩu?</a>
                 </div>
                 
                 <button type="submit" class="btn">Đăng Nhập</button>
                 
                 <div class="switch-form">
                     Chưa có tài khoản? 
-                    <a href="#" onclick="showForm('registerForm')">Đăng ký ngay</a>
+                    <a href="#register">Đăng ký ngay</a>
                 </div>
             </form>
         </div>
@@ -249,7 +249,7 @@
                 
                 <div class="switch-form">
                     Đã có tài khoản? 
-                    <a href="#" onclick="showForm('loginForm')">Đăng nhập ngay</a>
+                    <a href="#login">Đăng nhập ngay</a>
                 </div>
             </form>
         </div>
@@ -266,21 +266,73 @@
                 <button type="submit" class="btn">Gửi Yêu Cầu</button>
                 
                 <div class="switch-form">
-                    <a href="#" onclick="showForm('loginForm')">← Quay lại đăng nhập</a>
+                    <a href="#login">← Quay lại đăng nhập</a>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Hiển thị form được chọn
-        function showForm(formId) {
+        // Router đơn giản để xử lý URL
+        const router = {
+            routes: {
+                'login': showLoginForm,
+                'register': showRegisterForm,
+                'forgot-password': showForgotForm
+            },
+            
+            init: function() {
+                // Xử lý sự kiện hashchange
+                window.addEventListener('hashchange', this.handleRoute.bind(this));
+                
+                // Xử lý route ban đầu
+                this.handleRoute();
+            },
+            
+            handleRoute: function() {
+                const hash = window.location.hash.substring(1) || 'login';
+                
+                if (this.routes[hash]) {
+                    this.routes[hash]();
+                } else {
+                    // Mặc định hiển thị form đăng nhập
+                    showLoginForm();
+                }
+            }
+        };
+
+        // Hiển thị form đăng nhập
+        function showLoginForm() {
+            window.history.replaceState(null, null, '#login');
             document.querySelectorAll('.form-container').forEach(form => {
                 form.style.display = 'none';
             });
-            document.getElementById(formId).style.display = 'block';
-            
-            // Reset messages
+            document.getElementById('loginForm').style.display = 'block';
+            resetMessages();
+        }
+
+        // Hiển thị form đăng ký
+        function showRegisterForm() {
+            window.history.replaceState(null, null, '#register');
+            document.querySelectorAll('.form-container').forEach(form => {
+                form.style.display = 'none';
+            });
+            document.getElementById('registerForm').style.display = 'block';
+            resetMessages();
+        }
+
+        // Hiển thị form quên mật khẩu
+        function showForgotForm() {
+            window.history.replaceState(null, null, '#forgot-password');
+            document.querySelectorAll('.form-container').forEach(form => {
+                form.style.display = 'none';
+            });
+            document.getElementById('forgotForm').style.display = 'block';
+            resetMessages();
+        }
+
+        // Reset tất cả thông báo
+        function resetMessages() {
             document.querySelectorAll('.message').forEach(msg => {
                 msg.style.display = 'none';
                 msg.className = 'message';
@@ -345,7 +397,7 @@
             
             // Tự động chuyển về form đăng nhập sau 2 giây
             setTimeout(() => {
-                showForm('loginForm');
+                showLoginForm();
             }, 2000);
         });
 
@@ -392,12 +444,15 @@
             
             // Tự động chuyển về form đăng nhập sau 3 giây
             setTimeout(() => {
-                showForm('loginForm');
+                showLoginForm();
             }, 3000);
         });
 
         // Theo dõi nhập mật khẩu để cập nhật độ mạnh
         document.getElementById('regPassword').addEventListener('input', updatePasswordStrength);
+
+        // Khởi tạo router
+        router.init();
     </script>
 </body>
 </html>
