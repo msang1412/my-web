@@ -202,14 +202,14 @@
                         <input type="checkbox" id="rememberMe">
                         Ghi nhớ đăng nhập
                     </label>
-                    <a href="#forgot-password" class="forgot-link">Quên mật khẩu?</a>
+                    <a href="/forgot-password" class="forgot-link" onclick="event.preventDefault(); navigateTo('/forgot-password')">Quên mật khẩu?</a>
                 </div>
                 
                 <button type="submit" class="btn">Đăng Nhập</button>
                 
                 <div class="switch-form">
                     Chưa có tài khoản? 
-                    <a href="#register">Đăng ký ngay</a>
+                    <a href="/register" onclick="event.preventDefault(); navigateTo('/register')">Đăng ký ngay</a>
                 </div>
             </form>
         </div>
@@ -249,7 +249,7 @@
                 
                 <div class="switch-form">
                     Đã có tài khoản? 
-                    <a href="#login">Đăng nhập ngay</a>
+                    <a href="/login" onclick="event.preventDefault(); navigateTo('/login')">Đăng nhập ngay</a>
                 </div>
             </form>
         </div>
@@ -266,44 +266,50 @@
                 <button type="submit" class="btn">Gửi Yêu Cầu</button>
                 
                 <div class="switch-form">
-                    <a href="#login">← Quay lại đăng nhập</a>
+                    <a href="/login" onclick="event.preventDefault(); navigateTo('/login')">← Quay lại đăng nhập</a>
                 </div>
             </form>
         </div>
     </div>
 
     <script>
-        // Router đơn giản để xử lý URL
+        // Router sử dụng History API
         const router = {
             routes: {
-                'login': showLoginForm,
-                'register': showRegisterForm,
-                'forgot-password': showForgotForm
+                '/login': showLoginForm,
+                '/register': showRegisterForm,
+                '/forgot-password': showForgotForm
             },
             
             init: function() {
-                // Xử lý sự kiện hashchange
-                window.addEventListener('hashchange', this.handleRoute.bind(this));
+                // Xử lý sự kiện popstate (back/forward)
+                window.addEventListener('popstate', this.handleRoute.bind(this));
                 
                 // Xử lý route ban đầu
                 this.handleRoute();
             },
             
             handleRoute: function() {
-                const hash = window.location.hash.substring(1) || 'login';
+                const path = window.location.pathname;
                 
-                if (this.routes[hash]) {
-                    this.routes[hash]();
+                if (this.routes[path]) {
+                    this.routes[path]();
                 } else {
                     // Mặc định hiển thị form đăng nhập
-                    showLoginForm();
+                    navigateTo('/login');
                 }
             }
         };
 
+        // Điều hướng đến URL mới
+        function navigateTo(path) {
+            window.history.pushState(null, '', path);
+            router.handleRoute();
+        }
+
         // Hiển thị form đăng nhập
         function showLoginForm() {
-            window.history.replaceState(null, null, '#login');
+            document.title = 'Đăng Nhập';
             document.querySelectorAll('.form-container').forEach(form => {
                 form.style.display = 'none';
             });
@@ -313,7 +319,7 @@
 
         // Hiển thị form đăng ký
         function showRegisterForm() {
-            window.history.replaceState(null, null, '#register');
+            document.title = 'Đăng Ký';
             document.querySelectorAll('.form-container').forEach(form => {
                 form.style.display = 'none';
             });
@@ -323,7 +329,7 @@
 
         // Hiển thị form quên mật khẩu
         function showForgotForm() {
-            window.history.replaceState(null, null, '#forgot-password');
+            document.title = 'Quên Mật Khẩu';
             document.querySelectorAll('.form-container').forEach(form => {
                 form.style.display = 'none';
             });
@@ -397,7 +403,7 @@
             
             // Tự động chuyển về form đăng nhập sau 2 giây
             setTimeout(() => {
-                showLoginForm();
+                navigateTo('/login');
             }, 2000);
         });
 
@@ -444,7 +450,7 @@
             
             // Tự động chuyển về form đăng nhập sau 3 giây
             setTimeout(() => {
-                showLoginForm();
+                navigateTo('/login');
             }, 3000);
         });
 
