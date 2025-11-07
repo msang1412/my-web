@@ -1,40 +1,106 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <title>Roblox Stats Viewer</title>
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <style>
-    body{font-family: Arial, sans-serif; padding:16px}
-    table{border-collapse:collapse; width:100%}
-    th,td{border:1px solid #ddd; padding:8px; font-size:14px}
-    th{background:#f2f2f2}
-  </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Murder Mystery 2 Tracker</title>
+  <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body>
-  <h2>Roblox Stats (recent)</h2>
-  <table id="tbl">
-    <thead><tr><th>ID</th><th>Time</th><th>Player</th><th>UserId</th><th>JobId</th><th>Action</th><th>Value</th></tr></thead>
-    <tbody></tbody>
-  </table>
+<body class="bg-slate-950 text-gray-200 min-h-screen">
+  <div class="max-w-6xl mx-auto p-6 space-y-8">
+
+    <!-- Header -->
+    <div class="flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Murder Mystery 2</h1>
+      <span id="lastUpdate" class="text-sm text-gray-400"></span>
+    </div>
+
+    <!-- Summary -->
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div class="bg-slate-900 rounded-xl p-4 text-center">
+        <p class="text-green-400 font-semibold">Online / Accounts</p>
+        <p class="text-2xl font-bold" id="onlineCount">0/0</p>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-4 text-center">
+        <p class="text-yellow-400 font-semibold">Coins</p>
+        <p class="text-2xl font-bold" id="coins">0</p>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-4 text-center">
+        <p class="text-pink-400 font-semibold">Items</p>
+        <p class="text-2xl font-bold" id="items">0</p>
+      </div>
+      <div class="bg-slate-900 rounded-xl p-4 text-center">
+        <p class="text-purple-400 font-semibold">Candies</p>
+        <p class="text-2xl font-bold" id="candies">0</p>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="bg-slate-900 rounded-xl overflow-hidden">
+      <table class="w-full text-sm">
+        <thead class="bg-slate-800 text-gray-400">
+          <tr>
+            <th class="p-3 text-left">Account</th>
+            <th>Level</th>
+            <th>Candies</th>
+            <th>Battle Pass</th>
+            <th>Coins</th>
+            <th>Items</th>
+            <th>Device</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+      </table>
+    </div>
+  </div>
 
   <script>
-    async function load(){
-      const res = await fetch('/api/stats/list');
+    async function loadData() {
+      const res = await fetch("/api/list");
       const j = await res.json();
-      if(!j.ok){ console.error(j); return; }
-      const tbody = document.querySelector('#tbl tbody');
-      tbody.innerHTML = '';
-      j.rows.forEach(r=>{
-        const d = new Date(r.timestamp);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `<td>${r.id}</td><td>${d.toLocaleString()}</td><td>${escapeHtml(r.playerName)}</td><td>${r.userId}</td><td>${r.jobId}</td><td>${escapeHtml(r.action)}</td><td>${escapeHtml(r.value)}</td>`;
-        tbody.appendChild(tr);
+      if (!j.ok) return;
+
+      const list = j.list;
+      const tbody = document.getElementById("tableBody");
+      tbody.innerHTML = "";
+
+      let online = 0, total = list.length, totalCandies = 0, totalItems = 0, totalCoins = 0;
+
+      list.forEach(acc => {
+        const diff = Date.now() - acc.lastUpdate;
+        const isOnline = diff < 10000; // 10s timeout
+        if (isOnline) online++;
+        totalCandies += acc.candies || 0;
+        totalItems += acc.items || 0;
+        totalCoins += acc.coins || 0;
+
+        tbody.innerHTML += `
+          <tr class="border-b border-slate-800 hover:bg-slate-800">
+            <td class="p-3">${acc.account}</td>
+            <td class="text-center">${acc.level || 0}</td>
+            <td class="text-center text-purple-300">${acc.candies || 0}</td>
+            <td class="text-center">${acc.battlePass || 0}</td>
+            <td class="text-center text-yellow-300">${acc.coins || 0}</td>
+            <td class="text-center">${acc.items || 0}</td>
+            <td class="text-center">${acc.device || "?"}</td>
+            <td class="text-center">
+              <span class="${isOnline ? 'text-green-400' : 'text-red-400'} font-semibold">
+                ${isOnline ? 'Online' : 'Offline'}
+              </span>
+            </td>
+          </tr>`;
       });
+
+      document.getElementById("onlineCount").innerText = `${online}/${total}`;
+      document.getElementById("candies").innerText = totalCandies;
+      document.getElementById("items").innerText = totalItems;
+      document.getElementById("coins").innerText = totalCoins;
+      document.getElementById("lastUpdate").innerText = "Last updated: " + new Date().toLocaleTimeString();
     }
-    function escapeHtml(s){ return (s===null||s===undefined)?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
-    load();
-    setInterval(load, 5000);
+
+    loadData();
+    setInterval(loadData, 5000);
   </script>
 </body>
 </html>
