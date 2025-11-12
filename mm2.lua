@@ -3,13 +3,13 @@ if not getgenv().config then
         Kaitun = true,
         Speed = 25,
         Tp = true,
-        TpCooldown = 300,
+        TpCooldown = 300, 
         antiafk = true,
         webhook = true
     }
 end
 
-print("loading")
+wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
 local function getBestDevice()
@@ -144,10 +144,11 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+-- update
 local function updateCollectionTime()
     lastCollectionTime = tick()
     remainingTime = getgenv().config.TpCooldown
-    print("rs " .. remainingTime .. "s")
+    print("rs ")
 end
 
 local function performTeleport()
@@ -165,10 +166,10 @@ local function performTeleport()
 
     if success then
         print("success", result)
-        isOnCooldown = true
+        isOnCooldown = true        
         task.delay(60, function()
             isOnCooldown = false
-            print("0")
+            print("rs cd")
         end)
     else
         warn("loi roi rp o dis(tp)", result)
@@ -239,7 +240,7 @@ task.spawn(function()
         remainingTime = math.max(0, getgenv().config.TpCooldown - timeSinceLastCollection)
         
         if remainingTime > 0 then
-            print("1")
+            print("checkingg)
         end
         
         if timeSinceLastCollection >= getgenv().config.TpCooldown and not isOnCooldown then
