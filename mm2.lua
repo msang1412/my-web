@@ -1,15 +1,15 @@
 if not getgenv().config then
     getgenv().config = {
-        Kaitun = true,
-        Speed = 25,
-        Tp = true,
-        TpCooldown = 300, 
-        antiafk = true,
-        webhook = true
+        autoFarm = true,
+        flySpeed = 22,
+        autoTeleport = true,
+        teleportCooldown = 300,
+        antiAFK = true,
+        webhookEnabled = true
     }
 end
 
-print("loading")
+wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
 local function getBestDevice()
@@ -50,7 +50,6 @@ if bestDevice and bestButton then
     end
 end
 
--- Webhook
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -68,7 +67,7 @@ pcall(function()
 end)
 
 local function SendWebhook()
-    if not getgenv().config.webhook then return end
+    if not getgenv().config.webhookEnabled then return end
     
     local data = {
         username = "Saki Hub",
@@ -97,17 +96,17 @@ local character = player.Character or player.CharacterAdded:Wait()
 local rootPart = character:WaitForChild("HumanoidRootPart")
 local humanoid = character:WaitForChild("Humanoid")
 
-local isActive = getgenv().config.Kaitun
-local flySpeed = getgenv().config.Speed
+local isActive = getgenv().config.autoFarm
+local flySpeed = getgenv().config.flySpeed
 local collected = 0
 local startTime = tick()
-local antiAFK = getgenv().config.antiafk
-local farming = getgenv().config.Kaitun
+local antiAFK = getgenv().config.antiAFK
+local farming = getgenv().config.autoFarm
 
 local ExtrasRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Extras"):WaitForChild("RequestTeleport")
 local lastCollectionTime = tick()
 local isOnCooldown = false
-local remainingTime = getgenv().config.TpCooldown
+local remainingTime = getgenv().config.teleportCooldown
 
 player.CharacterAdded:Connect(function(char)
     character = char
@@ -116,15 +115,14 @@ player.CharacterAdded:Connect(function(char)
     if isActive then
         task.wait(3)
         if not farming then
-            kiengay()
+            startFarming()
         end
     end
 end)
 
-local collectSound = Instance.new("Sound")
+local collectSound = Instance.new("Sound", rootPart)
 collectSound.SoundId = "rbxassetid://12221967"
 collectSound.Volume = 0.7
-collectSound.Parent = rootPart
 
 player.Idled:Connect(function()
     if antiAFK then
@@ -144,37 +142,25 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- update
 local function updateCollectionTime()
     lastCollectionTime = tick()
-    remainingTime = getgenv().config.TpCooldown
-    print("rs " .. remainingTime .. "s")
+    remainingTime = getgenv().config.teleportCooldown
 end
 
--- tele
 local function performTeleport()
-    if isOnCooldown or not getgenv().config.Tp then return end
+    if isOnCooldown or not getgenv().config.autoTeleport then return end
     
-    local args = {
-        "Disguises"
-    }
-
-    print("cbi...")
+    local args = {"Disguises"}
     
     local success, result = pcall(function()
         return ExtrasRemote:InvokeServer(unpack(args))
     end)
 
     if success then
-        print("success", result)
         isOnCooldown = true
-        -- rs 
         task.delay(60, function()
             isOnCooldown = false
-            print("rs cd")
         end)
-    else
-        warn("loi roi rp o dis(tp)", result)
     end
 end
 
@@ -212,13 +198,9 @@ local function teleportToCandy(targetCandy)
     if not targetCandy or not isActive or not character then return false end
     local candyVisual = targetCandy:FindFirstChild("CoinVisual")
     if not candyVisual or candyVisual:GetAttribute("Collected") then return false end
-    pcall(function()
-        humanoid:ChangeState(11)
-    end)
+    pcall(function() humanoid:ChangeState(11) end)
     local distance = (rootPart.Position - targetCandy.Position).Magnitude
-    if distance > 500 then
-        return false
-    end
+    if distance > 500 then return false end
     local travelTime = math.max(0.05, distance / flySpeed)
     local tween = TweenService:Create(rootPart, TweenInfo.new(travelTime, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetCandy.Position + Vector3.new(0, 2, 0))})
     tween:Play()
@@ -234,23 +216,14 @@ local function teleportToCandy(targetCandy)
 end
 
 task.spawn(function()
-    while getgenv().config.Tp do
+    while getgenv().config.autoTeleport do
         task.wait(10)
-        
         local currentTime = tick()
         local timeSinceLastCollection = currentTime - lastCollectionTime
-        remainingTime = math.max(0, getgenv().config.TpCooldown - timeSinceLastCollection)
-        
-        if remainingTime > 0 then
-            print("checking")
-        end
-        
-        if timeSinceLastCollection >= getgenv().config.TpCooldown and not isOnCooldown then
-            print("checking...")
-            
+        remainingTime = math.max(0, getgenv().config.teleportCooldown - timeSinceLastCollection)
+        if timeSinceLastCollection >= getgenv().config.teleportCooldown and not isOnCooldown then
             local hasCollectedRecently = false
             local checkStartTime = tick()
-            
             while tick() - checkStartTime < 15 do
                 local targetCandy = getNearestCandy()
                 if targetCandy then
@@ -259,31 +232,26 @@ task.spawn(function()
                         collected += 1
                         pcall(function() collectSound:Play() end)
                         updateCollectionTime()
-                        print("rn...")
                         hasCollectedRecently = true
                         break
                     else
-                        print("nn")
                         break
                     end
                 else
                     task.wait(1)
                 end
             end
-            
             if not hasCollectedRecently then
-                print("cbi hop...")
                 performTeleport()
             end
         end
     end
 end)
 
-function kiengay()
+function startFarming()
     farming = true
     collected = 0
     startTime = tick()
-    print("start...")
     task.spawn(function()
         while farming and isActive do
             local targetCandy = getNearestCandy()
@@ -306,9 +274,7 @@ end
 
 task.spawn(function()
     task.wait(2)
-    if getgenv().config.Kaitun then
-        kiengay()
+    if getgenv().config.autoFarm then
+        startFarming()
     end
 end)
-
-print("done")
