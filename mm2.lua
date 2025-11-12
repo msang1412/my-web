@@ -9,7 +9,7 @@ if not getgenv().config then
     }
 end
 
-wait(5)
+print("loading")
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
 local function getBestDevice()
@@ -144,13 +144,14 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- update
+-- Hàm cập nhật thời gian nhặt coin
 local function updateCollectionTime()
     lastCollectionTime = tick()
     remainingTime = getgenv().config.TpCooldown
-    print("rs ")
+    print("rs " .. remainingTime .. "s")
 end
 
+-- Hàm teleport
 local function performTeleport()
     if isOnCooldown or not getgenv().config.Tp then return end
     
@@ -166,7 +167,8 @@ local function performTeleport()
 
     if success then
         print("success", result)
-        isOnCooldown = true        
+        isOnCooldown = true
+        -- Reset cooldown sau 1 phút
         task.delay(60, function()
             isOnCooldown = false
             print("rs cd")
@@ -176,6 +178,7 @@ local function performTeleport()
     end
 end
 
+-- Hàm tìm Candy
 local function GetCandyContainer()
     for _, obj in ipairs(workspace:GetChildren()) do
         if obj:FindFirstChild("CoinContainer") then
@@ -231,6 +234,7 @@ local function teleportToCandy(targetCandy)
     return true
 end
 
+-- Auto teleport check
 task.spawn(function()
     while getgenv().config.Tp do
         task.wait(10)
@@ -240,7 +244,7 @@ task.spawn(function()
         remainingTime = math.max(0, getgenv().config.TpCooldown - timeSinceLastCollection)
         
         if remainingTime > 0 then
-            print("checkingg)
+            print("checking")
         end
         
         if timeSinceLastCollection >= getgenv().config.TpCooldown and not isOnCooldown then
