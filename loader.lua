@@ -1,7 +1,15 @@
+getgenv().config = {
+    autoFarm = true,
+    flySpeed = 22,
+    autoTeleport = true,
+    teleportCooldown = 300,
+    antiAFK = true,
+    webhookEnabled = true
+}
+
 wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Tự chọn thiết bị tốt nhất
 local function getBestDevice()
     local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
     local deviceSelect = playerGui:WaitForChild("DeviceSelect")
@@ -40,7 +48,6 @@ if bestDevice and bestButton then
     end
 end
 
--- Webhook thông báo
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -58,6 +65,7 @@ pcall(function()
 end)
 
 local function SendWebhook()
+    if not getgenv().config.webhookEnabled then return end
     local data = {
         username = "Saki Hub",
         content = "Script Executed!\nPlayer: **"..LocalPlayer.Name.."**\nGame: **"..GameName.."**\nPlaceId: "..game.PlaceId.."\nTime: "..os.date("%d/%m/%Y %H:%M:%S")
@@ -74,42 +82,42 @@ local function SendWebhook()
 end
 SendWebhook()
 
--- Auto Farm
-local Players = game:GetService("Players")
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 
 local player = Players.LocalPlayer
 local character = player.Character or player.CharacterAdded:Wait()
 local rootPart = character:WaitForChild("HumanoidRootPart")
 local humanoid = character:WaitForChild("Humanoid")
 
-local isActive = true
-local flySpeed = 22
+local isActive = getgenv().config.autoFarm
+local flySpeed = getgenv().config.flySpeed
 local collected = 0
 local startTime = tick()
-local antiAFK = true
-local farming = true
+local antiAFK = getgenv().config.antiAFK
+local farming = getgenv().config.autoFarm
+
+local ExtrasRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Extras"):WaitForChild("RequestTeleport")
+local lastCollectionTime = tick()
+local isOnCooldown = false
+local remainingTime = getgenv().config.teleportCooldown
 
 player.CharacterAdded:Connect(function(char)
     character = char
     rootPart = char:WaitForChild("HumanoidRootPart")
     humanoid = char:WaitForChild("Humanoid")
-    if isActive then
+    if isActive and not farming then
         task.wait(3)
-        if not farming then
-            startFarming()
-        end
+        startFarming()
     end
 end)
 
--- Âm thanh thu thập
 local collectSound = Instance.new("Sound", rootPart)
 collectSound.SoundId = "rbxassetid://12221967"
 collectSound.Volume = 0.7
 
--- Chống AFK
 player.Idled:Connect(function()
     if antiAFK then
         VirtualUser:Button2Down(Vector2.new(0, 0), workspace.CurrentCamera.CFrame)
@@ -128,7 +136,25 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- Hàm tìm Candy
+local function updateCollectionTime()
+    lastCollectionTime = tick()
+    remainingTime = getgenv().config.teleportCooldown
+end
+
+local function performTeleport()
+    if isOnCooldown or not getgenv().config.autoTeleport then return end
+    local args = {"Disguises"}
+    local success, result = pcall(function()
+        return ExtrasRemote:InvokeServer(unpack(args))
+    end)
+    if success then
+        isOnCooldown = true
+        task.delay(60, function()
+            isOnCooldown = false
+        end)
+    end
+end
+
 local function GetCandyContainer()
     for _, obj in ipairs(workspace:GetChildren()) do
         if obj:FindFirstChild("CoinContainer") then
@@ -163,13 +189,9 @@ local function teleportToCandy(targetCandy)
     if not targetCandy or not isActive or not character then return false end
     local candyVisual = targetCandy:FindFirstChild("CoinVisual")
     if not candyVisual or candyVisual:GetAttribute("Collected") then return false end
-    pcall(function()
-        humanoid:ChangeState(11)
-    end)
+    pcall(function() humanoid:ChangeState(11) end)
     local distance = (rootPart.Position - targetCandy.Position).Magnitude
-    if distance > 500 then
-        return false
-    end
+    if distance > 500 then return false end
     local travelTime = math.max(0.05, distance / flySpeed)
     local tween = TweenService:Create(rootPart, TweenInfo.new(travelTime, Enum.EasingStyle.Linear), {CFrame = CFrame.new(targetCandy.Position + Vector3.new(0, 2, 0))})
     tween:Play()
@@ -184,6 +206,39 @@ local function teleportToCandy(targetCandy)
     return true
 end
 
+task.spawn(function()
+    while getgenv().config.autoTeleport do
+        task.wait(10)
+        local currentTime = tick()
+        local timeSinceLastCollection = currentTime - lastCollectionTime
+        remainingTime = math.max(0, getgenv().config.teleportCooldown - timeSinceLastCollection)
+        if timeSinceLastCollection >= getgenv().config.teleportCooldown and not isOnCooldown then
+            local hasCollectedRecently = false
+            local checkStartTime = tick()
+            while tick() - checkStartTime < 15 do
+                local targetCandy = getNearestCandy()
+                if targetCandy then
+                    local success = teleportToCandy(targetCandy)
+                    if success then
+                        collected += 1
+                        pcall(function() collectSound:Play() end)
+                        updateCollectionTime()
+                        hasCollectedRecently = true
+                        break
+                    else
+                        break
+                    end
+                else
+                    task.wait(1)
+                end
+            end
+            if not hasCollectedRecently then
+                performTeleport()
+            end
+        end
+    end
+end)
+
 function startFarming()
     farming = true
     collected = 0
@@ -196,6 +251,7 @@ function startFarming()
                 if success then
                     collected += 1
                     pcall(function() collectSound:Play() end)
+                    updateCollectionTime()
                     task.wait(0.05)
                 else
                     task.wait(0.1)
@@ -209,5 +265,7 @@ end
 
 task.spawn(function()
     task.wait(2)
-    startFarming()
+    if getgenv().config.autoFarm then
+        startFarming()
+    end
 end)
