@@ -144,12 +144,14 @@ RunService.Stepped:Connect(function()
     end
 end)
 
+-- Hàm cập nhật thời gian nhặt coin
 local function updateCollectionTime()
     lastCollectionTime = tick()
     remainingTime = getgenv().config.TpCooldown
     print("rs " .. remainingTime .. "s")
 end
 
+-- tele
 local function performTeleport()
     if isOnCooldown or not getgenv().config.Tp then return end
     
@@ -166,6 +168,7 @@ local function performTeleport()
     if success then
         print("success", result)
         isOnCooldown = true
+        -- rs 
         task.delay(60, function()
             isOnCooldown = false
             print("rs cd")
@@ -243,7 +246,7 @@ task.spawn(function()
         end
         
         if timeSinceLastCollection >= getgenv().config.TpCooldown and not isOnCooldown then
-            print("check xem may con dang lam viec ko")
+            print("checking...")
             
             local hasCollectedRecently = false
             local checkStartTime = tick()
