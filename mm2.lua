@@ -101,7 +101,7 @@ local isActive = getgenv().config.Kaitun
 local flySpeed = getgenv().config.Speed
 local collected = 0
 local startTime = tick()
-local antiAFK = getgenv().config.antiafk  -- SỬA: đổi thành antiafk
+local antiAFK = getgenv().config.antiafk
 local farming = getgenv().config.Kaitun
 
 local ExtrasRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Extras"):WaitForChild("RequestTeleport")
@@ -144,7 +144,7 @@ RunService.Stepped:Connect(function()
     end
 end)
 
--- Hàm cập nhật thời gian nhặt coin
+-- update
 local function updateCollectionTime()
     lastCollectionTime = tick()
     remainingTime = getgenv().config.TpCooldown
