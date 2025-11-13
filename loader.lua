@@ -24,7 +24,7 @@ Frame.ZIndex = 1
 Frame.Parent = HopGui
 
 Title.Font = Enum.Font.GothamBold
-Title.Text = "jojo Hub"
+Title.Text = "Sang Hub"
 Title.TextColor3 = Color3.fromRGB(200, 210, 255)
 Title.TextSize = 70
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
