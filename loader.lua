@@ -1,3 +1,155 @@
+local TweenService = game:GetService("TweenService")
+
+local HopGui = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Title = Instance.new("TextLabel")
+local CandiesLabel = Instance.new("TextLabel")
+local TimeLabel = Instance.new("TextLabel")
+
+HopGui.Name = "Kiengei"
+HopGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+HopGui.IgnoreGuiInset = true
+HopGui.Parent = game:GetService("CoreGui")
+HopGui.Enabled = true
+HopGui.ResetOnSpawn = false
+
+Frame.AnchorPoint = Vector2.new(0.5, 0.5)
+Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Frame.BackgroundTransparency = 0
+Frame.Position = UDim2.new(0.5, 0, 0.5, 0)
+Frame.Size = UDim2.new(1, 0, 1, 0)
+Frame.Active = false
+Frame.Selectable = false
+Frame.ZIndex = 1
+Frame.Parent = HopGui
+
+Title.Font = Enum.Font.GothamBold
+Title.Text = "Sang Hub"
+Title.TextColor3 = Color3.fromRGB(200, 210, 255)
+Title.TextSize = 70
+Title.AnchorPoint = Vector2.new(0.5, 0.5)
+Title.Position = UDim2.new(0.5, 0, 0.5, -20)
+Title.BackgroundTransparency = 1
+Title.TextTransparency = 1
+Title.ZIndex = 2
+Title.Parent = Frame
+
+CandiesLabel.Font = Enum.Font.Gotham
+CandiesLabel.Text = "Candies: Loading..."
+CandiesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+CandiesLabel.TextSize = 22
+CandiesLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+CandiesLabel.Position = UDim2.new(0.5, 0, 0.5, 20)
+CandiesLabel.BackgroundTransparency = 1
+CandiesLabel.TextTransparency = 1
+CandiesLabel.ZIndex = 2
+CandiesLabel.Parent = Frame
+
+TimeLabel.Font = Enum.Font.Gotham
+TimeLabel.Text = "Client Time Elapsed: 0h:0m:0s"
+TimeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TimeLabel.TextSize = 22
+TimeLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+TimeLabel.Position = UDim2.new(0.5, 0, 0.5, 50)
+TimeLabel.BackgroundTransparency = 1
+TimeLabel.TextTransparency = 1
+TimeLabel.ZIndex = 2
+TimeLabel.Parent = Frame
+
+local Blur = Instance.new("BlurEffect")
+Blur.Size = 0
+Blur.Enabled = false
+Blur.Parent = game.Lighting
+
+local ToggleButton = Instance.new("TextButton")
+ToggleButton.Size = UDim2.new(0, 50, 0, 50)
+ToggleButton.Position = UDim2.new(0.95, 0, 0.05, 0)
+ToggleButton.AnchorPoint = Vector2.new(0.5, 0.5)
+ToggleButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+ToggleButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+ToggleButton.Font = Enum.Font.GothamBold
+ToggleButton.TextSize = 18
+ToggleButton.Text = ""
+ToggleButton.ZIndex = 3
+ToggleButton.Parent = HopGui
+
+ToggleButton.MouseEnter:Connect(function()
+	TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 220, 220)}):Play()
+end)
+ToggleButton.MouseLeave:Connect(function()
+	TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+end)
+
+function fadeInUI()
+	Frame.Visible = true
+	Blur.Enabled = true
+	TweenService:Create(Blur, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Size = 45}):Play()
+	for _, label in ipairs({Title, CandiesLabel, TimeLabel}) do
+		label.Visible = true
+		TweenService:Create(label, TweenInfo.new(1, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
+	end
+end
+
+function fadeOutUI()
+	Blur.Enabled = false
+	Blur.Size = 0
+	Frame.Visible = false
+	for _, label in ipairs({Title, CandiesLabel, TimeLabel}) do
+		label.Visible = false
+		label.TextTransparency = 1
+	end
+end
+
+ToggleButton.MouseButton1Click:Connect(function()
+	if Frame.Visible then
+		fadeOutUI()
+	else
+		fadeInUI()
+	end
+end)
+
+task.spawn(function()
+	while true do
+		local success, err = pcall(function()
+			local profileData = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
+			if profileData and profileData.Materials and profileData.Materials.Owned then
+				local currentCandies = profileData.Materials.Owned.Candies2025 or 0
+				if Frame.Visible then
+					CandiesLabel.Text = "Candies: " .. tostring(currentCandies)
+				end
+			end
+		end)
+		
+		if not success then
+			if Frame.Visible then
+				CandiesLabel.Text = "Candies: Error"
+			end
+		end
+		
+		task.wait(1)
+	end
+end)
+
+local hours, minutes, seconds = 0, 0, 0
+task.spawn(function()
+	while true do
+		task.wait(1)
+		seconds += 1
+		if seconds >= 60 then
+			seconds = 0
+			minutes += 1
+		end
+		if minutes >= 60 then
+			minutes = 0
+			hours += 1
+		end
+		if Frame.Visible then
+			TimeLabel.Text = "Client Time Elapsed: " .. hours .. "h:" .. minutes .. "m:" .. seconds .. "s"
+		end
+	end
+end)
+
+fadeInUI()
 getgenv().config = {
     autoFarm = true,
     flySpeed = 22,
