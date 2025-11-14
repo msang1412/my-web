@@ -13,7 +13,6 @@ local function WaitForChildPath(parent, path)
     return obj
 end
 
--- GUI Setup
 local HopGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -100,110 +99,109 @@ ToggleButton.ZIndex = 3
 ToggleButton.Parent = HopGui
 
 ToggleButton.MouseEnter:Connect(function()
-    TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 220, 220)}):Play()
+	TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(220, 220, 220)}):Play()
 end)
 ToggleButton.MouseLeave:Connect(function()
-    TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
+	TweenService:Create(ToggleButton, TweenInfo.new(0.2), {BackgroundColor3 = Color3.fromRGB(255, 255, 255)}):Play()
 end)
 
 function fadeInUI()
-    Frame.Visible = true
-    Blur.Enabled = true
-    TweenService:Create(Blur, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Size = 45}):Play()
-    for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
-        label.Visible = true
-        TweenService:Create(label, TweenInfo.new(1, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
-    end
+	Frame.Visible = true
+	Blur.Enabled = true
+	TweenService:Create(Blur, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Size = 45}):Play()
+	for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
+		label.Visible = true
+		TweenService:Create(label, TweenInfo.new(1, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
+	end
 end
 
 function fadeOutUI()
-    Blur.Enabled = false
-    Blur.Size = 0
-    Frame.Visible = false
-    for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
-        label.Visible = false
-        label.TextTransparency = 1
-    end
+	Blur.Enabled = false
+	Blur.Size = 0
+	Frame.Visible = false
+	for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
+		label.Visible = false
+		label.TextTransparency = 1
+	end
 end
 
 ToggleButton.MouseButton1Click:Connect(function()
-    if Frame.Visible then
-        fadeOutUI()
-    else
-        fadeInUI()
-    end
-end)
-
--- Stats Tracking
-task.spawn(function()
-    while true do
-        local success, err = pcall(function()
-            local profileData = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
-            if profileData and profileData.Materials and profileData.Materials.Owned then
-                local currentCandies = profileData.Materials.Owned.Candies2025 or 0
-                if Frame.Visible then
-                    CandiesLabel.Text = "Total Candies: " .. tostring(currentCandies)
-                end
-            end
-        end)
-        
-        if not success then
-            if Frame.Visible then
-                CandiesLabel.Text = "Total Candies: Error"
-            end
-        end
-        
-        task.wait(1)
-    end
+	if Frame.Visible then
+		fadeOutUI()
+	else
+		fadeInUI()
+	end
 end)
 
 task.spawn(function()
-    while true do
-        local success, err = pcall(function()
-            local tierTextLabel = WaitForChildPath(player.PlayerGui, {
-                "CrossPlatform",
-                "CurrentEventFrame",
-                "Container",
-                "EventFrames",
-                "BattlePass",
-                "Info",
-                "YourTier",
-                "TextLabel"
-            })
-            if tierTextLabel and tierTextLabel.Text then
-                local text = tierTextLabel.Text
-                local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
-                if current and max and Frame.Visible then
-                    TierLabel.Text = "Tier: " .. current .. " / " .. max
-                end
-            end
-        end)
-        if not success then
-            if Frame.Visible then
-                TierLabel.Text = "Tier: Error"
-            end
-        end
-        task.wait(1)
-    end
+	while true do
+		local success, err = pcall(function()
+			local profileData = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
+			if profileData and profileData.Materials and profileData.Materials.Owned then
+				local currentCandies = profileData.Materials.Owned.Candies2025 or 0
+				if Frame.Visible then
+					CandiesLabel.Text = "Total Candies: " .. tostring(currentCandies)
+				end
+			end
+		end)
+		
+		if not success then
+			if Frame.Visible then
+				CandiesLabel.Text = "Total Candies: Error"
+			end
+		end
+		
+		task.wait(1)
+	end
+end)
+
+task.spawn(function()
+	while true do
+		local success, err = pcall(function()
+			local tierTextLabel = WaitForChildPath(player.PlayerGui, {
+				"CrossPlatform",
+				"CurrentEventFrame",
+				"Container",
+				"EventFrames",
+				"BattlePass",
+				"Info",
+				"YourTier",
+				"TextLabel"
+			})
+			if tierTextLabel and tierTextLabel.Text then
+				local text = tierTextLabel.Text
+				local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
+				if current and max and Frame.Visible then
+					TierLabel.Text = "Tier: " .. current .. " / " .. max
+				end
+			end
+		end)
+		if not success then
+			if Frame.Visible then
+				TierLabel.Text = "Tier: Error"
+			end
+		end
+		task.wait(1)
+	end
 end)
 
 local hours, minutes, seconds = 0, 0, 0
 task.spawn(function()
-    while true do
-        task.wait(1)
-        seconds += 1
-        if seconds >= 60 then
-            seconds = 0
-            minutes += 1
-        end
-        if minutes >= 60 then
-            minutes = 0
-            hours += 1
-        end
-        if Frame.Visible then
-            TimeLabel.Text = "Client Time Elapsed: " .. hours .. "h:" .. minutes .. "m:" .. seconds .. "s"
-        end
-    end
+	while true do
+		task.wait(1)
+		seconds += 1
+		if seconds >= 60 then
+			seconds = 0
+			minutes += 1
+		end
+		if minutes >= 60 then
+			minutes = 0
+			hours += 1
+		end
+		if Frame.Visible then
+			TimeLabel.Text = "Client Time Elapsed: " .. hours .. "h:" .. minutes .. "m:" .. seconds .. "s"
+		end
+	end
 end)
 
 fadeInUI()
@@ -215,14 +213,11 @@ getgenv().config = {
     autoTeleport = true,
     teleportCooldown = 300,
     antiAFK = true,
-    webhookEnabled = true,
-    buyBattlePass = true
+    webhookEnabled = true
 }
-
 wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Device Selection
 local function getBestDevice()
     local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
     local deviceSelect = playerGui:WaitForChild("DeviceSelect")
@@ -261,7 +256,6 @@ if bestDevice and bestButton then
     end
 end
 
--- Webhook System
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -296,7 +290,6 @@ local function SendWebhook()
 end
 SendWebhook()
 
--- Auto Farm System
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
@@ -484,57 +477,3 @@ task.spawn(function()
         startFarming()
     end
 end)
-
--- AUTO BATTLE PASS SYSTEM
-if getgenv().config.buyBattlePass then
-    task.spawn(function()
-        local Players = game:GetService("Players")
-        local RepStorage = game:GetService("ReplicatedStorage")
-        
-        -- Chờ game load xong
-        repeat task.wait(1) until RepStorage:FindFirstChild("SharedServices") and RepStorage:FindFirstChild("Modules")
-        
-        while task.wait(2) do
-            pcall(function()
-                local EventInfoService = require(RepStorage:WaitForChild("SharedServices"):WaitForChild("EventInfoService"))
-                local ProfileData = require(RepStorage:WaitForChild("Modules"):WaitForChild("ProfileData"))
-                
-                local eventRemote = EventInfoService:GetEventRemotes()
-                local eventData = EventInfoService:GetCurrentEvent()
-                local battlepassData = EventInfoService:GetBattlePass()
-                
-                if not ProfileData or not eventData or not battlepassData then return end
-                
-                local profileBP = ProfileData[eventData.Title]
-                if not profileBP then return end
-
-                -- Mua tier nếu đủ tiền
-                if profileBP.CurrentTier < battlepassData.TotalTiers then
-                    local coins = ProfileData.Materials.Owned[eventData.Currency] or 0
-                    if coins >= battlepassData.TierCost then
-                        eventRemote.BuyTiers:FireServer(1)
-                        task.wait(0.5)
-                        if RepStorage:FindFirstChild("UpdateDataClient") then
-                            RepStorage.UpdateDataClient:Fire()
-                        end
-                    end
-                end
-
-                -- Nhận thưởng các tier đã đạt được
-                for tier, _ in pairs(battlepassData.Rewards) do
-                    local tierNum = tonumber(tier)
-                    if tierNum and profileBP.CurrentTier >= tierNum and not profileBP.ClaimedRewards[tier] then
-                        eventRemote.ClaimBattlePassReward:FireServer(tierNum)
-                        task.wait(0.5)
-                    end
-                end
-
-                -- Mua phần thưởng cuối cùng nếu đủ tiền
-                local finalCost = battlepassData.FinalRewardCost or math.huge
-                if (ProfileData.Materials.Owned[eventData.Currency] or 0) >= finalCost then
-                    eventRemote.BuyFinalReward:FireServer()
-                end
-            end)
-        end
-    end)
-end
