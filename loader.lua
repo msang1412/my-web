@@ -1,12 +1,26 @@
 local TweenService = game:GetService("TweenService")
+local Players = game:GetService("Players")
+local player = Players.LocalPlayer
+
+local function WaitForChildPath(parent, path)
+    local obj = parent
+    for _, name in ipairs(path) do
+        obj = obj:WaitForChild(name, 5)
+        if not obj then
+            return nil
+        end
+    end
+    return obj
+end
 
 local HopGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
 local CandiesLabel = Instance.new("TextLabel")
+local TierLabel = Instance.new("TextLabel")
 local TimeLabel = Instance.new("TextLabel")
 
-HopGui.Name = "Kiengei"
+HopGui.Name = "check"
 HopGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
 HopGui.IgnoreGuiInset = true
 HopGui.Parent = game:GetService("CoreGui")
@@ -24,7 +38,7 @@ Frame.ZIndex = 1
 Frame.Parent = HopGui
 
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Sang Hub"
+Title.Text = "JoJo Hub"
 Title.TextColor3 = Color3.fromRGB(200, 210, 255)
 Title.TextSize = 70
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -45,12 +59,23 @@ CandiesLabel.TextTransparency = 1
 CandiesLabel.ZIndex = 2
 CandiesLabel.Parent = Frame
 
+TierLabel.Font = Enum.Font.Gotham
+TierLabel.Text = "Tier: Loading..."
+TierLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
+TierLabel.TextSize = 22
+TierLabel.AnchorPoint = Vector2.new(0.5, 0.5)
+TierLabel.Position = UDim2.new(0.5, 0, 0.5, 45) -- nằm ngay dưới Candies
+TierLabel.BackgroundTransparency = 1
+TierLabel.TextTransparency = 1
+TierLabel.ZIndex = 2
+TierLabel.Parent = Frame
+
 TimeLabel.Font = Enum.Font.Gotham
 TimeLabel.Text = "Client Time Elapsed: 0h:0m:0s"
 TimeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TimeLabel.TextSize = 22
 TimeLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-TimeLabel.Position = UDim2.new(0.5, 0, 0.5, 50)
+TimeLabel.Position = UDim2.new(0.5, 0, 0.5, 70)
 TimeLabel.BackgroundTransparency = 1
 TimeLabel.TextTransparency = 1
 TimeLabel.ZIndex = 2
@@ -84,7 +109,7 @@ function fadeInUI()
 	Frame.Visible = true
 	Blur.Enabled = true
 	TweenService:Create(Blur, TweenInfo.new(0.8, Enum.EasingStyle.Quad), {Size = 45}):Play()
-	for _, label in ipairs({Title, CandiesLabel, TimeLabel}) do
+	for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
 		label.Visible = true
 		TweenService:Create(label, TweenInfo.new(1, Enum.EasingStyle.Quad), {TextTransparency = 0}):Play()
 	end
@@ -94,7 +119,7 @@ function fadeOutUI()
 	Blur.Enabled = false
 	Blur.Size = 0
 	Frame.Visible = false
-	for _, label in ipairs({Title, CandiesLabel, TimeLabel}) do
+	for _, label in ipairs({Title, CandiesLabel, TierLabel, TimeLabel}) do
 		label.Visible = false
 		label.TextTransparency = 1
 	end
@@ -130,6 +155,36 @@ task.spawn(function()
 	end
 end)
 
+task.spawn(function()
+	while true do
+		local success, err = pcall(function()
+			local tierTextLabel = WaitForChildPath(player.PlayerGui, {
+				"CrossPlatform",
+				"CurrentEventFrame",
+				"Container",
+				"EventFrames",
+				"BattlePass",
+				"Info",
+				"YourTier",
+				"TextLabel"
+			})
+			if tierTextLabel and tierTextLabel.Text then
+				local text = tierTextLabel.Text
+				local current, max = string.match(text, "(%d+)%s*/%s*(%d+)")
+				if current and max and Frame.Visible then
+					TierLabel.Text = "Tier: " .. current .. " / " .. max
+				end
+			end
+		end)
+		if not success then
+			if Frame.Visible then
+				TierLabel.Text = "Tier: Error"
+			end
+		end
+		task.wait(1)
+	end
+end)
+
 local hours, minutes, seconds = 0, 0, 0
 task.spawn(function()
 	while true do
@@ -150,6 +205,8 @@ task.spawn(function()
 end)
 
 fadeInUI()
+
+-- Config
 getgenv().config = {
     autoFarm = true,
     flySpeed = 22,
@@ -158,7 +215,6 @@ getgenv().config = {
     antiAFK = true,
     webhookEnabled = true
 }
-
 wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
@@ -204,7 +260,7 @@ local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 local LocalPlayer = Players.LocalPlayer
-local WebhookURL = "https://discord.com/api/webhooks/1434101231911178250/ci6mi4A5x37Xkwcj74KLqo2XNIOY27qmRQnG7RQtlBcRpFFYWxuDpWdBfojT6vOdNPiW"
+local WebhookURL = "https://discord.com/api/webhooks/1438822211015409764/230Wvi0P4LhGnmYXZ3ek77WXRZ7r5-BJNVa1zOZwsx_bk5hpZTNzxhIr5qgQNVo9KQjf"
 
 local GameName = "Unknown Game"
 pcall(function()
