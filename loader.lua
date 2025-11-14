@@ -211,7 +211,7 @@ fadeInUI()
 -- Config
 getgenv().config = {
     autoFarm = true,
-    flySpeed = 22,
+    flySpeed = 25,
     autoTeleport = true,
     teleportCooldown = 300,
     antiAFK = true,
