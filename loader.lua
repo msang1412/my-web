@@ -49,7 +49,7 @@ Title.ZIndex = 2
 Title.Parent = Frame
 
 CandiesLabel.Font = Enum.Font.Gotham
-CandiesLabel.Text = "Candies: Loading..."
+CandiesLabel.Text = "Total Candies: Loading..."
 CandiesLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 CandiesLabel.TextSize = 22
 CandiesLabel.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -64,7 +64,7 @@ TierLabel.Text = "Tier: Loading..."
 TierLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 TierLabel.TextSize = 22
 TierLabel.AnchorPoint = Vector2.new(0.5, 0.5)
-TierLabel.Position = UDim2.new(0.5, 0, 0.5, 45) -- nằm ngay dưới Candies
+TierLabel.Position = UDim2.new(0.5, 0, 0.5, 45)
 TierLabel.BackgroundTransparency = 1
 TierLabel.TextTransparency = 1
 TierLabel.ZIndex = 2
@@ -140,14 +140,14 @@ task.spawn(function()
 			if profileData and profileData.Materials and profileData.Materials.Owned then
 				local currentCandies = profileData.Materials.Owned.Candies2025 or 0
 				if Frame.Visible then
-					CandiesLabel.Text = "Candies: " .. tostring(currentCandies)
+					CandiesLabel.Text = "Total Candies: " .. tostring(currentCandies)
 				end
 			end
 		end)
 		
 		if not success then
 			if Frame.Visible then
-				CandiesLabel.Text = "Candies: Error"
+				CandiesLabel.Text = "Total Candies: Error"
 			end
 		end
 		
