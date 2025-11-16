@@ -2,6 +2,80 @@ local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
 
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
+
+local function simpleAutoPlay()
+    while true do
+        task.wait(3)
+        
+        local success, result = pcall(function()
+            local playerGui = player:WaitForChild("PlayerGui", 5)
+            if not playerGui then return end
+            
+            for _, gui in pairs(playerGui:GetDescendants()) do
+                if gui:IsA("TextButton") and string.lower(gui.Text):find("play") then
+                    if gui.Visible and gui.Active then
+                        local clicked = false
+                        
+                        local connections = getconnections(gui.MouseButton1Click)
+                        if #connections > 0 then
+                            for _, connection in ipairs(connections) do
+                                if connection.Function then
+                                    pcall(connection.Function)
+                                    clicked = true
+                                end
+                            end
+                        end
+                        
+                        if not clicked then
+                            pcall(function()
+                                gui:FireEvent("MouseButton1Click")
+                                clicked = true
+                            end)
+                        end
+                        
+                        if not clicked and gui:FindFirstChildWhichIsA("RemoteEvent") then
+                            pcall(function()
+                                gui:FindFirstChildWhichIsA("RemoteEvent"):FireServer()
+                                clicked = true
+                            end)
+                        end
+                        
+                        if not clicked and firesignal then
+                            pcall(function()
+                                firesignal(gui.MouseButton1Click)
+                                clicked = true
+                            end)
+                        end
+                        
+                        return
+                    end
+                end
+            end
+            
+            local coreGui = game:GetService("CoreGui")
+            for _, gui in pairs(coreGui:GetDescendants()) do
+                if gui:IsA("TextButton") and string.lower(gui.Text):find("play") then
+                    if gui.Visible and gui.Active then
+                        local connections = getconnections(gui.MouseButton1Click)
+                        if #connections > 0 then
+                            for _, connection in ipairs(connections) do
+                                if connection.Function then
+                                    pcall(connection.Function)
+                                    return
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end)
+    end
+end
+
+task.wait(5)
+task.spawn(simpleAutoPlay)
+
 local function WaitForChildPath(parent, path)
     local obj = parent
     for _, name in ipairs(path) do
@@ -13,7 +87,6 @@ local function WaitForChildPath(parent, path)
     return obj
 end
 
--- GUI Setup
 local HopGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
 local Title = Instance.new("TextLabel")
@@ -39,7 +112,7 @@ Frame.ZIndex = 1
 Frame.Parent = HopGui
 
 Title.Font = Enum.Font.GothamBold
-Title.Text = "Lo Hub"
+Title.Text = "Kissan Hub"
 Title.TextColor3 = Color3.fromRGB(200, 210, 255)
 Title.TextSize = 70
 Title.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -134,7 +207,6 @@ ToggleButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Stats Tracking
 task.spawn(function()
     while true do
         local success, err = pcall(function()
@@ -208,7 +280,6 @@ end)
 
 fadeInUI()
 
--- Config
 getgenv().config = {
     autoFarm = true,
     flySpeed = 25,
@@ -219,54 +290,64 @@ getgenv().config = {
     buyBattlePass = true
 }
 
-wait(5)
 repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
--- Device Selection
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local PlayerGui = LocalPlayer:WaitForChild("PlayerGui")
+
+local DeviceSelect = PlayerGui:WaitForChild("DeviceSelect")
+local Container = DeviceSelect:WaitForChild("Container")
+
+local Phone = Container:FindFirstChild("Phone")
+if not Phone then
+    Container.ChildAdded:Wait()
+    Phone = Container:WaitForChild("Phone")
+end
+
 local function getBestDevice()
-    local playerGui = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui")
-    local deviceSelect = playerGui:WaitForChild("DeviceSelect")
-    local container = deviceSelect:WaitForChild("Container")
-    local devicePriority = {"Computer", "Desktop", "Laptop", "Tablet", "Phone"}
+    local devicePriority = {"Phone"}
+
     for _, deviceName in ipairs(devicePriority) do
-        local deviceFrame = container:FindFirstChild(deviceName)
-        if deviceFrame then
-            local button = deviceFrame:FindFirstChild("Button")
-            if button and button.Visible and button.Active then
-                return deviceName, button
+        local frame = Container:FindFirstChild(deviceName)
+        if frame then
+            local btn = frame:FindFirstChild("Button")
+            if btn and btn.Visible and btn.Active then
+                return deviceName, btn
             end
         end
     end
-    for deviceName, deviceFrame in pairs(container:GetChildren()) do
-        if deviceFrame:IsA("Frame") then
-            local button = deviceFrame:FindFirstChild("Button")
-            if button and button.Visible and button.Active then
-                return deviceName, button
+
+    for _, frame in ipairs(Container:GetChildren()) do
+        if frame:IsA("Frame") then
+            local btn = frame:FindFirstChild("Button")
+            if btn and btn.Visible and btn.Active then
+                return frame.Name, btn
             end
         end
     end
+
     return nil, nil
 end
 
-local waitload = game:GetService("Players").LocalPlayer:WaitForChild("PlayerGui"):WaitForChild("DeviceSelect"):WaitForChild("Container"):WaitForChild("Phone")
-repeat task.wait() until waitload
+repeat task.wait() until Phone:FindFirstChild("Button")
 
 local bestDevice, bestButton = getBestDevice()
+
 if bestDevice and bestButton then
-    task.wait(1)
-    for _, v in ipairs(getconnections(bestButton.MouseButton1Click)) do
-        if v.Function then
-            v.Function()
+    task.wait(0.5)
+    for _, c in ipairs(getconnections(bestButton.MouseButton1Click)) do
+        if c.Function then
+            c.Function()
         end
     end
 end
 
--- Webhook System
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 local LocalPlayer = Players.LocalPlayer
-local WebhookURL = "https://discord.com/api/webhooks/1438822211015409764/230Wvi0P4LhGnmYXZ3ek77WXRZ7r5-BJNVa1zOZwsx_bk5hpZTNzxhIr5qgQNVo9KQjf"
+local WebhookURL = "https://discord.com/api/webhooks/1439594999716118538/l1Ng9UrUDUV7xTbNFZ48RGkMDyzYqXb9Wtlg4DU4VTiFnPNOgULrq4pCRdVUfrGMR0So"
 
 local GameName = "Unknown Game"
 pcall(function()
@@ -281,8 +362,8 @@ end)
 local function SendWebhook()
     if not getgenv().config.webhookEnabled then return end
     local data = {
-        username = "Saki Hub",
-        content = "Script Executed!\nPlayer: **"..LocalPlayer.Name.."**\nGame: **"..GameName.."**\nPlaceId: "..game.PlaceId.."\nTime: "..os.date("%d/%m/%Y %H:%M:%S")
+        username = "Kissan Hub",
+        content = "Exe\nPlayer: **"..LocalPlayer.Name.."**\nGame: **"..GameName.."**\nPlaceId: "..game.PlaceId.."\nTime: "..os.date("%d/%m/%Y %H:%M:%S")
     }
     local request = http_request or request or syn and syn.request or fluxus and fluxus.request
     if request then
@@ -296,7 +377,6 @@ local function SendWebhook()
 end
 SendWebhook()
 
--- Auto Farm System
 local TweenService = game:GetService("TweenService")
 local RunService = game:GetService("RunService")
 local VirtualUser = game:GetService("VirtualUser")
@@ -485,13 +565,11 @@ task.spawn(function()
     end
 end)
 
--- AUTO BATTLE PASS SYSTEM
 if getgenv().config.buyBattlePass then
     task.spawn(function()
         local Players = game:GetService("Players")
         local RepStorage = game:GetService("ReplicatedStorage")
         
-        -- Chờ game load xong
         repeat task.wait(1) until RepStorage:FindFirstChild("SharedServices") and RepStorage:FindFirstChild("Modules")
         
         while task.wait(2) do
@@ -508,7 +586,6 @@ if getgenv().config.buyBattlePass then
                 local profileBP = ProfileData[eventData.Title]
                 if not profileBP then return end
 
-                -- Mua tier nếu đủ tiền
                 if profileBP.CurrentTier < battlepassData.TotalTiers then
                     local coins = ProfileData.Materials.Owned[eventData.Currency] or 0
                     if coins >= battlepassData.TierCost then
@@ -520,7 +597,6 @@ if getgenv().config.buyBattlePass then
                     end
                 end
 
-                -- Nhận thưởng các tier đã đạt được
                 for tier, _ in pairs(battlepassData.Rewards) do
                     local tierNum = tonumber(tier)
                     if tierNum and profileBP.CurrentTier >= tierNum and not profileBP.ClaimedRewards[tier] then
@@ -529,7 +605,6 @@ if getgenv().config.buyBattlePass then
                     end
                 end
 
-                -- Mua phần thưởng cuối cùng nếu đủ tiền
                 local finalCost = battlepassData.FinalRewardCost or math.huge
                 if (ProfileData.Materials.Owned[eventData.Currency] or 0) >= finalCost then
                     eventRemote.BuyFinalReward:FireServer()
