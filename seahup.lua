@@ -9,7 +9,7 @@ local T1UIColor = {
 	["Border Color"] = Color3.fromRGB(255, 64, 64),
 	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
 	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Logo Image"] = "http://www.roblox.com/asset/?id=98976281849470",
+	["Logo Image"] = "http://www.roblox.com/asset/?id=75810289554989",
 	["Search Icon Color"] = Color3.fromRGB(255, 255, 255),
 	["Search Icon Highlight Color"] = Color3.fromRGB(255, 64, 64),
 	["GUI Text Color"] = Color3.fromRGB(230, 230, 230),
