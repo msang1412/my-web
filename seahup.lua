@@ -159,14 +159,14 @@ Library_Function.HideGui.Name = 'Kissan Hub Btn'
 local btnHide = Instance.new('TextButton', Library_Function.HideGui) 
 btnHide.BackgroundTransparency = 1
 btnHide.Text = ""
-btnHide.AnchorPoint = Vector2.new(0, 1)
+btnHide.AnchorPoint = Vector2.new(0, 0)  -- ⬅️ Đổi anchor point
 btnHide.Size = UDim2.new(0,50,0,50)
-btnHide.Position = UDim2.new(0,15,1,-15)
+btnHide.Position = UDim2.new(0,15,0,15)  -- ⬅️ Đổi position (góc trên trái)
 
 local btnHideFrame = Instance.new('Frame', btnHide)
-btnHideFrame.AnchorPoint = Vector2.new(0, 1)
+btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- ⬅️ Đổi anchor point
 btnHideFrame.Size = UDim2.new(0,50,0,50)
-btnHideFrame.Position = UDim2.new(0,0,1,0)
+btnHideFrame.Position = UDim2.new(0,0,0,0)  -- ⬅️ Đổi position
 btnHideFrame.Name = "dut dit"
 btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
@@ -182,7 +182,6 @@ imgHide.Position = UDim2.new(.5,0,.5,0)
 local UICornerBtnHide = Instance.new("UICorner")
 UICornerBtnHide.Parent = btnHideFrame
 UICornerBtnHide.CornerRadius = UDim.new(1,0)
-
 Library.ToggleUI = function()
 	getgenv().UIToggled = not getgenv().UIToggled
     local sizeXY = getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30)
