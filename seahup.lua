@@ -164,17 +164,15 @@ btnHide.Size = UDim2.new(0,50,0,50)
 btnHide.Position = UDim2.new(0,15,1,-15)
 
 local btnHideFrame = Instance.new('Frame', btnHide)
-btnHideFrame.AnchorPoint = Vector2.new(0.5, 0)  -- Neo giữa phía trên
+btnHideFrame.AnchorPoint = Vector2.new(0, 1)
 btnHideFrame.Size = UDim2.new(0,50,0,50)
-btnHideFrame.Position = UDim2.new(0.5,0,0,30)   -- Giữa màn hình, cách top 30px
+btnHideFrame.Position = UDim2.new(0,0,1,0)
 btnHideFrame.Name = "dut dit"
 btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
 
--- Giữ nguyên phần còn lại...
 local imgHide = Instance.new('ImageLabel', btnHide)
 imgHide.AnchorPoint = Vector2.new(0, 0)
--- ... rest of your code
 imgHide.Image = getgenv().UIColor["Logo Image"]
 imgHide.BackgroundTransparency = 1
 imgHide.Size = UDim2.new(0,getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30),0, getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30))
