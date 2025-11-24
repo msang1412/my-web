@@ -164,9 +164,9 @@ btnHide.Size = UDim2.new(0,50,0,50)
 btnHide.Position = UDim2.new(0,15,1,-15)
 
 local btnHideFrame = Instance.new('Frame', btnHide)
-btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- Đổi anchor
+btnHideFrame.AnchorPoint = Vector2.new(0, 1)
 btnHideFrame.Size = UDim2.new(0,50,0,50)
-btnHideFrame.Position = UDim2.new(0,10,0,10)  -- Góc trên trái, cách mỗi cạnh 10px
+btnHideFrame.Position = UDim2.new(0,0,1,0)
 btnHideFrame.Name = "dut dit"
 btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
