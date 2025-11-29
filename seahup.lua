@@ -491,6 +491,58 @@ function Library.CreateMain(Setting)
 	TextLabelMain.TextXAlignment = Enum.TextXAlignment.Left
 	TextLabelMain.TextColor3 = getgenv().UIColor["GUI Text Color"]
 
+	local SettingsFrame = Instance.new("Frame")
+SettingsFrame.Name = "SettingsFrame"
+SettingsFrame.Parent = TopMain
+SettingsFrame.AnchorPoint = Vector2.new(1, 0.5)
+SettingsFrame.BackgroundTransparency = 1
+SettingsFrame.Position = UDim2.new(1, -5, 0.5, 0)
+SettingsFrame.Size = UDim2.new(0, 25, 0, 25)
+SettingsFrame.ZIndex = 10
+
+local SettingsButton = Instance.new("TextButton")
+SettingsButton.Name = "SettingsButton"
+SettingsButton.Parent = SettingsFrame
+SettingsButton.BackgroundTransparency = 1
+SettingsButton.Size = UDim2.new(1, 0, 1, 0)
+SettingsButton.Text = ""
+SettingsButton.ZIndex = 11
+
+local SettingsIcon = Instance.new("ImageLabel")
+SettingsIcon.Name = "SettingsIcon"
+SettingsIcon.Parent = SettingsFrame
+SettingsIcon.AnchorPoint = Vector2.new(0.5, 0.5)
+SettingsIcon.BackgroundTransparency = 1
+SettingsIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
+SettingsIcon.Size = UDim2.new(1, -2, 1, -2)
+SettingsIcon.Image = "rbxassetid://7397332215"
+SettingsIcon.ImageColor3 = getgenv().UIColor["Setting Icon Color"]
+SettingsIcon.ZIndex = 12
+SettingsIcon.ImageTransparency = 0
+SettingsIcon.ScaleType = Enum.ScaleType.Fit
+
+SettingsButton.MouseEnter:Connect(function()
+    TweenService:Create(SettingsIcon, TweenInfo.new(0.2), {
+        ImageColor3 = getgenv().UIColor["Search Icon Highlight Color"],
+        Size = UDim2.new(1, 0, 1, 0)
+    }):Play()
+end)
+
+SettingsButton.MouseLeave:Connect(function()
+    TweenService:Create(SettingsIcon, TweenInfo.new(0.2), {
+        ImageColor3 = getgenv().UIColor["Setting Icon Color"],
+        Size = UDim2.new(1, -2, 1, -2)
+    }):Play()
+end)
+
+SettingsButton.MouseButton1Click:Connect(function()
+    Library.CreateNoti({
+        Title = "Setting",
+        Desc = "ko co gi ca",
+        ShowTime = 3
+    })
+end)
+
 	local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
