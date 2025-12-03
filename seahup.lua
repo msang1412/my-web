@@ -381,7 +381,7 @@ end
 
 function Library.CreateMain(Setting)
 
-	local TitleNameMain =  "Blox Fruit"
+	local TitleNameMain = Setting.Title or "Blox Fruit"
 	getgenv().MainDesc = Setting.Desc or ""
 
 	local djtmemay = false
