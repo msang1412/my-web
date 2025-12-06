@@ -2688,6 +2688,5 @@ end)
 end
 
 Library.CreateNoti({Title = 'UI Library', Desc = 'The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI.', ShowTime = 10}, true)
-Library.CreateNoti({Title = 'sanguzu', Desc = 'donate plz', ShowTime = 5}, true)
 
 return Library
