@@ -2675,12 +2675,12 @@ end)
 					end
 					function sectionFunction.CreateButtonNew(Setting, Callback)
 	local Title = Setting.Title or "Button"
-	local Icon = Setting.Icon or "rbxassetid://3926305904"
+	local ButtonText = Setting.ButtonText or "RUN"
 	local Callback = Callback or function() end
 	
 	local TweenService = game:GetService("TweenService")
 	
-	-- ===== CONTAINER CHÍNH =====
+	-- ===== CONTAINER CHÍNH (TO HƠN 1.25 LẦN) =====
 	local MainContainer = Instance.new("Frame")
 	local Background = Instance.new("Frame")
 	local BackgroundCorner = Instance.new("UICorner")
@@ -2693,14 +2693,14 @@ end)
 	local ActionSide = Instance.new("Frame")
 	local ActionButton = Instance.new("Frame")
 	local ActionButtonCorner = Instance.new("UICorner")
-	local ActionIcon = Instance.new("ImageLabel")
+	local ActionText = Instance.new("TextLabel")
 	local ActionHitbox = Instance.new("TextButton")
 	
-	-- ===== CONTAINER CHÍNH =====
+	-- ===== CONTAINER CHÍNH (LỚN HƠN) =====
 	MainContainer.Name = Title.."_NewButton"
 	MainContainer.Parent = Section
 	MainContainer.BackgroundTransparency = 1
-	MainContainer.Size = UDim2.new(1, 0, 0, 25)
+	MainContainer.Size = UDim2.new(1, 0, 0, 31) -- 25 * 1.25 = 31.25 ≈ 31
 	MainContainer.LayoutOrder = 999
 	
 	-- Background
@@ -2708,11 +2708,11 @@ end)
 	Background.Parent = MainContainer
 	Background.AnchorPoint = Vector2.new(0.5, 0.5)
 	Background.Position = UDim2.new(0.5, 0, 0.5, 0)
-	Background.Size = UDim2.new(1, -10, 1, 0)
+	Background.Size = UDim2.new(1, -12, 1, 0) -- Giảm padding
 	Background.BackgroundColor3 = getgenv().UIColor["Background 1 Color"]
 	Background.BorderSizePixel = 0
 	
-	BackgroundCorner.CornerRadius = UDim.new(0, 4)
+	BackgroundCorner.CornerRadius = UDim.new(0, 5)
 	BackgroundCorner.Name = "BackgroundCorner"
 	BackgroundCorner.Parent = Background
 	
@@ -2720,10 +2720,10 @@ end)
 	TextSide.Name = "TextSide"
 	TextSide.Parent = Background
 	TextSide.BackgroundTransparency = 1
-	TextSide.Position = UDim2.new(0, 10, 0, 0)
-	TextSide.Size = UDim2.new(0.8, -15, 1, 0)
+	TextSide.Position = UDim2.new(0, 12, 0, 0) -- Padding lớn hơn
+	TextSide.Size = UDim2.new(0.65, -15, 1, 0) -- 65% cho text
 	
-	-- Title
+	-- Title (chữ lớn hơn)
 	TitleLabel.Name = "TitleLabel"
 	TitleLabel.Parent = TextSide
 	TitleLabel.BackgroundTransparency = 1
@@ -2731,19 +2731,19 @@ end)
 	TitleLabel.Font = Enum.Font.GothamBold
 	TitleLabel.Text = Title
 	TitleLabel.TextColor3 = getgenv().UIColor["Text Color"]
-	TitleLabel.TextSize = 14
+	TitleLabel.TextSize = 15 -- Tăng từ 14 lên 15
 	TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 	TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
 	
-	-- ===== BUTTON ACTION BÊN PHẢI =====
+	-- ===== BUTTON ACTION BÊN PHẢI (LỚN HƠN) =====
 	ActionSide.Name = "ActionSide"
 	ActionSide.Parent = Background
 	ActionSide.BackgroundTransparency = 1
 	ActionSide.AnchorPoint = Vector2.new(1, 0.5)
-	ActionSide.Position = UDim2.new(1, -5, 0.5, 0)
-	ActionSide.Size = UDim2.new(0.2, 0, 0, 20)
+	ActionSide.Position = UDim2.new(1, -6, 0.5, 0) -- Padding lớn hơn
+	ActionSide.Size = UDim2.new(0.35, -12, 0, 25) -- 35% cho button, cao 25px
 	
-	-- Button tròn
+	-- Button (lớn hơn)
 	ActionButton.Name = "ActionButton"
 	ActionButton.Parent = ActionSide
 	ActionButton.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2752,19 +2752,23 @@ end)
 	ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"]
 	ActionButton.BorderSizePixel = 0
 	
-	ActionButtonCorner.CornerRadius = UDim.new(1, 0)
+	ActionButtonCorner.CornerRadius = UDim.new(0, 5)
 	ActionButtonCorner.Name = "ActionButtonCorner"
 	ActionButtonCorner.Parent = ActionButton
 	
-	-- Icon
-	ActionIcon.Name = "ActionIcon"
-	ActionIcon.Parent = ActionButton
-	ActionIcon.AnchorPoint = Vector2.new(0.5, 0.5)
-	ActionIcon.Position = UDim2.new(0.5, 0, 0.5, 0)
-	ActionIcon.Size = UDim2.new(0, 14, 0, 14)
-	ActionIcon.BackgroundTransparency = 1
-	ActionIcon.Image = Icon
-	ActionIcon.ImageColor3 = Color3.fromRGB(255, 255, 255)
+	-- TEXT trong button (lớn hơn)
+	ActionText.Name = "ActionText"
+	ActionText.Parent = ActionButton
+	ActionText.AnchorPoint = Vector2.new(0.5, 0.5)
+	ActionText.Position = UDim2.new(0.5, 0, 0.5, 0)
+	ActionText.Size = UDim2.new(1, -8, 1, 0)
+	ActionText.BackgroundTransparency = 1
+	ActionText.Font = Enum.Font.GothamBold
+	ActionText.Text = ButtonText
+	ActionText.TextColor3 = Color3.fromRGB(255, 255, 255)
+	ActionText.TextSize = 13 -- Tăng từ 12 lên 13
+	ActionText.TextStrokeTransparency = 0.5
+	ActionText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 	
 	-- Hitbox
 	ActionHitbox.Name = "ActionHitbox"
@@ -2779,42 +2783,67 @@ end)
 	-- ===== HIỆU ỨNG =====
 	local originalColor = ActionButton.BackgroundColor3
 	local hoverColor = Color3.new(
-		math.clamp(originalColor.R * 1.3, 0, 1),
-		math.clamp(originalColor.G * 1.3, 0, 1),
-		math.clamp(originalColor.B * 1.3, 0, 1)
+		math.clamp(originalColor.R * 1.2, 0, 1),
+		math.clamp(originalColor.G * 1.2, 0, 1),
+		math.clamp(originalColor.B * 1.2, 0, 1)
 	)
+	
+	local originalButtonSize = ActionButton.Size
+	local originalTextSize = ActionText.TextSize
+	local hoverTextSize = 14
 	
 	ActionHitbox.MouseEnter:Connect(function()
 		TweenService:Create(ActionButton, TweenInfo.new(0.2), {
 			BackgroundColor3 = hoverColor,
-			Size = UDim2.new(1.15, 0, 1.15, 0)
+			Size = UDim2.new(1.08, 0, 1.15, 0) -- Phóng to nhiều hơn
+		}):Play()
+		
+		TweenService:Create(ActionText, TweenInfo.new(0.2), {
+			TextSize = hoverTextSize,
+			TextStrokeTransparency = 0.3
 		}):Play()
 	end)
 	
 	ActionHitbox.MouseLeave:Connect(function()
 		TweenService:Create(ActionButton, TweenInfo.new(0.2), {
 			BackgroundColor3 = originalColor,
-			Size = UDim2.new(1, 0, 1, 0)
+			Size = originalButtonSize
+		}):Play()
+		
+		TweenService:Create(ActionText, TweenInfo.new(0.2), {
+			TextSize = originalTextSize,
+			TextStrokeTransparency = 0.5
 		}):Play()
 	end)
 	
 	ActionHitbox.MouseButton1Down:Connect(function()
+		-- Nhấn xuống (thu nhỏ)
 		TweenService:Create(ActionButton, TweenInfo.new(0.1), {
 			BackgroundColor3 = Color3.new(
-				math.clamp(originalColor.R * 0.6, 0, 1),
-				math.clamp(originalColor.G * 0.6, 0, 1),
-				math.clamp(originalColor.B * 0.6, 0, 1)
+				math.clamp(originalColor.R * 0.7, 0, 1),
+				math.clamp(originalColor.G * 0.7, 0, 1),
+				math.clamp(originalColor.B * 0.7, 0, 1)
 			),
-			Size = UDim2.new(0.85, 0, 0.85, 0)
+			Size = UDim2.new(0.92, 0, 0.88, 0)
+		}):Play()
+		
+		TweenService:Create(ActionText, TweenInfo.new(0.1), {
+			TextSize = 12
 		}):Play()
 		
 		wait(0.1)
 		
-		TweenService:Create(ActionButton, TweenInfo.new(0.15, Enum.EasingStyle.Back), {
+		-- Bật lại với hiệu ứng bounce
+		TweenService:Create(ActionButton, TweenInfo.new(0.2, Enum.EasingStyle.Back, Enum.EasingDirection.Out), {
 			BackgroundColor3 = originalColor,
-			Size = UDim2.new(1, 0, 1, 0)
+			Size = originalButtonSize
 		}):Play()
 		
+		TweenService:Create(ActionText, TweenInfo.new(0.2), {
+			TextSize = originalTextSize
+		}):Play()
+		
+		-- Chạy callback
 		pcall(Callback)
 	end)
 	
@@ -2825,18 +2854,24 @@ end)
 		TitleLabel.Text = newTitle
 	end
 	
-	function newButtonFunctions:SetIcon(newIcon)
-		ActionIcon.Image = newIcon
+	function newButtonFunctions:SetButtonText(newText)
+		ActionText.Text = newText
 	end
 	
 	function newButtonFunctions:SetButtonColor(color)
 		ActionButton.BackgroundColor3 = color
 		originalColor = color
 		hoverColor = Color3.new(
-			math.clamp(color.R * 1.3, 0, 1),
-			math.clamp(color.G * 1.3, 0, 1),
-			math.clamp(color.B * 1.3, 0, 1)
+			math.clamp(color.R * 1.2, 0, 1),
+			math.clamp(color.G * 1.2, 0, 1),
+			math.clamp(color.B * 1.2, 0, 1)
 		)
+	end
+	
+	function newButtonFunctions:SetEnabled(enabled)
+		ActionHitbox.Active = enabled
+		ActionButton.BackgroundTransparency = enabled and 0 or 0.5
+		ActionText.TextTransparency = enabled and 0 or 0.5
 	end
 	
 	return newButtonFunctions
