@@ -2840,7 +2840,10 @@ end)
 	end
 	
 	return newButtonFunctions
-end			
+end
+				return sectionFunction
+
+			end
 
 		return pageFunction
 
