@@ -2738,17 +2738,17 @@ end)
     ActionSide.BackgroundTransparency = 1
     ActionSide.AnchorPoint = Vector2.new(1, 0.5)
     ActionSide.Position = UDim2.new(1, -8, 0.5, 0)
-    ActionSide.Size = UDim2.new(0, 100, 0, 28)
+    ActionSide.Size = UDim2.new(0, 105, 0, 28)
 
     ActionButton.Name = "ActionButton"
     ActionButton.Parent = ActionSide
     ActionButton.AnchorPoint = Vector2.new(0.5, 0.5)
     ActionButton.Position = UDim2.new(0.5, 0, 0.5, 0)
     ActionButton.Size = UDim2.new(1, 0, 1, 0)
-    ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"] -- ⭐ MÀU CŨ
+    ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"]
     ActionButton.BorderSizePixel = 0
 
-    ActionButtonCorner.CornerRadius = UDim.new(0,75, 0) -- ⭐ BO TRÒN FULL NHƯ ẢNH
+    ActionButtonCorner.CornerRadius = UDim.new(0,50, 0)
     ActionButtonCorner.Parent = ActionButton
 
     -- TEXT
@@ -2846,6 +2846,6 @@ end
 
 end
 
-Library.CreateNoti({Title = 'UI Lọ', Desc = 'The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI.', ShowTime = 10}, true)
+Library.CreateNoti({Title = 'UI Library', Desc = 'The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI.', ShowTime = 10}, true)
 
 return Library
