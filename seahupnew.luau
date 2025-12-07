@@ -2675,7 +2675,7 @@ end)
 					end
 					function sectionFunction.CreateButtonNew(Setting, Callback)
     local Title = Setting.Title or "Button"
-    local ButtonText = Setting.ButtonText or "RUN"
+    local ButtonText = Setting.ButtonText or "Button"
     local Callback = Callback or function() end
 
     local TweenService = game:GetService("TweenService")
