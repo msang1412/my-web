@@ -2680,30 +2680,25 @@ end)
 
     local TweenService = game:GetService("TweenService")
 
-    -- ========== MAIN CONTAINER ==========
     local MainContainer = Instance.new("Frame")
     local Background = Instance.new("Frame")
     local BackgroundCorner = Instance.new("UICorner")
 
-    -- LEFT TEXT
     local TextSide = Instance.new("Frame")
     local TitleLabel = Instance.new("TextLabel")
 
-    -- RIGHT BUTTON
     local ActionSide = Instance.new("Frame")
     local ActionButton = Instance.new("Frame")
     local ActionButtonCorner = Instance.new("UICorner")
     local ActionText = Instance.new("TextLabel")
     local ActionHitbox = Instance.new("TextButton")
 
-    -- MAIN
     MainContainer.Name = Title.."_NewButton"
     MainContainer.Parent = Section
     MainContainer.BackgroundTransparency = 1
     MainContainer.Size = UDim2.new(1, 0, 0, 36)
     MainContainer.LayoutOrder = 999
 
-    -- Background
     Background.Name = "Background"
     Background.Parent = MainContainer
     Background.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2715,7 +2710,6 @@ end)
     BackgroundCorner.CornerRadius = UDim.new(0, 6)
     BackgroundCorner.Parent = Background
 
-    -- TEXT LEFT
     TextSide.Name = "TextSide"
     TextSide.Parent = Background
     TextSide.BackgroundTransparency = 1
@@ -2732,7 +2726,6 @@ end)
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
 
-    -- ACTION BUTTON
     ActionSide.Name = "ActionSide"
     ActionSide.Parent = Background
     ActionSide.BackgroundTransparency = 1
@@ -2748,10 +2741,9 @@ end)
     ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"]
     ActionButton.BorderSizePixel = 0
 
-    ActionButtonCorner.CornerRadius = UDim.new(0,50, 0)
+    ActionButtonCorner.CornerRadius = UDim.new(0.5, 0)
     ActionButtonCorner.Parent = ActionButton
 
-    -- TEXT
     ActionText.Name = "ActionText"
     ActionText.Parent = ActionButton
     ActionText.AnchorPoint = Vector2.new(0.5, 0.5)
@@ -2765,14 +2757,12 @@ end)
     ActionText.TextStrokeTransparency = 0.45
     ActionText.TextStrokeColor3 = Color3.fromRGB(0, 0, 0)
 
-    -- HITBOX
     ActionHitbox.Name = "ActionHitbox"
     ActionHitbox.Parent = ActionButton
     ActionHitbox.BackgroundTransparency = 1
     ActionHitbox.Size = UDim2.new(1, 0, 1, 0)
     ActionHitbox.Text = ""
 
-    -- EFFECTS
     local originalColor = ActionButton.BackgroundColor3
     local hoverColor = Color3.new(
         math.clamp(originalColor.R * 1.15, 0, 1),
@@ -2810,7 +2800,6 @@ end)
         pcall(Callback)
     end)
 
-    -- API
     local buttonInfo = {}
 
     function buttonInfo:SetTitle(t)
