@@ -2696,7 +2696,7 @@ end)
     MainContainer.Name = Title.."_NewButton"
     MainContainer.Parent = Section
     MainContainer.BackgroundTransparency = 1
-    MainContainer.Size = UDim2.new(1, 0, 0, 36)
+    MainContainer.Size = UDim2.new(1, 0, 0, 45)
     MainContainer.LayoutOrder = 999
 
     Background.Name = "Background"
