@@ -2738,7 +2738,7 @@ end)
     ActionSide.BackgroundTransparency = 1
     ActionSide.AnchorPoint = Vector2.new(1, 0.5)
     ActionSide.Position = UDim2.new(1, -8, 0.5, 0)
-    ActionSide.Size = UDim2.new(0, 125, 0, 26) -- ⭐ DÀI 125px
+    ActionSide.Size = UDim2.new(0, 110, 0, 26) -- ⭐ DÀI 125px
 
     ActionButton.Name = "ActionButton"
     ActionButton.Parent = ActionSide
