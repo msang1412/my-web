@@ -2696,42 +2696,43 @@ end)
     MainContainer.Name = Title.."_NewButton"
     MainContainer.Parent = Section
     MainContainer.BackgroundTransparency = 1
-    MainContainer.Size = UDim2.new(1, 0, 0, 36)
+    MainContainer.Size = UDim2.new(1, 0, 0, 35)
     MainContainer.LayoutOrder = 999
 
     Background.Name = "Background"
     Background.Parent = MainContainer
     Background.AnchorPoint = Vector2.new(0.5, 0.5)
     Background.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Background.Size = UDim2.new(1, -12, 1, 0)
+    Background.Size = UDim2.new(1, -10, 1, 0)
     Background.BackgroundColor3 = getgenv().UIColor["Background 1 Color"]
     Background.BorderSizePixel = 0
 
-    BackgroundCorner.CornerRadius = UDim.new(0, 6)
+    BackgroundCorner.CornerRadius = UDim.new(0, 4)
     BackgroundCorner.Parent = Background
 
     TextSide.Name = "TextSide"
     TextSide.Parent = Background
     TextSide.BackgroundTransparency = 1
-    TextSide.Position = UDim2.new(0, 12, 0, 0)
-    TextSide.Size = UDim2.new(0.65, -12, 1, 0)
+    TextSide.Position = UDim2.new(0, 10, 0, 0)
+    TextSide.Size = UDim2.new(0.6, -10, 1, 0)
 
     TitleLabel.Name = "TitleLabel"
     TitleLabel.Parent = TextSide
     TitleLabel.BackgroundTransparency = 1
     TitleLabel.Size = UDim2.new(1, 0, 1, 0)
-    TitleLabel.Font = Enum.Font.GothamBold
+    TitleLabel.Font = Enum.Font.GothamBlack
     TitleLabel.Text = Title
     TitleLabel.TextColor3 = getgenv().UIColor["Text Color"]
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
 
     ActionSide.Name = "ActionSide"
     ActionSide.Parent = Background
     ActionSide.BackgroundTransparency = 1
     ActionSide.AnchorPoint = Vector2.new(1, 0.5)
-    ActionSide.Position = UDim2.new(1, -8, 0.5, 0)
-    ActionSide.Size = UDim2.new(0, 105, 0, 28)
+    ActionSide.Position = UDim2.new(1, -5, 0.5, 0)
+    ActionSide.Size = UDim2.new(0, 100, 0, 25)
 
     ActionButton.Name = "ActionButton"
     ActionButton.Parent = ActionSide
@@ -2741,7 +2742,7 @@ end)
     ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"]
     ActionButton.BorderSizePixel = 0
 
-    ActionButtonCorner.CornerRadius = UDim.new(0.5, 0)
+    ActionButtonCorner.CornerRadius = UDim.new(0, 4)
     ActionButtonCorner.Parent = ActionButton
 
     ActionText.Name = "ActionText"
