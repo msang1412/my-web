@@ -161,7 +161,7 @@ btnHide.BackgroundTransparency = 1
 btnHide.Text = ""
 btnHide.AnchorPoint = Vector2.new(0, 0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i anchor point
 btnHide.Size = UDim2.new(0,50,0,50)
-btnHide.Position = UDim2.new(0,15,0,15)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position (gĂ„â€Ă‚Â³c trĂ„â€Ă‚Âªn trĂ„â€Ă‚Â¡i)
+btnHide.Position = UDim2.new(0,15,1,-15)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position (gĂ„â€Ă‚Â³c trĂ„â€Ă‚Âªn trĂ„â€Ă‚Â¡i)
 
 local btnHideFrame = Instance.new('Frame', btnHide)
 btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i anchor point
