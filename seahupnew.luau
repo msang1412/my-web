@@ -159,14 +159,14 @@ Library_Function.HideGui.Name = 'Kissan Hub Btn'
 local btnHide = Instance.new('TextButton', Library_Function.HideGui) 
 btnHide.BackgroundTransparency = 1
 btnHide.Text = ""
-btnHide.AnchorPoint = Vector2.new(0, 0)  -- Ă¢Â¬â€¦Ă¯Â¸Â Ă„ÂĂ¡Â»â€¢i anchor point
+btnHide.AnchorPoint = Vector2.new(0, 1)
 btnHide.Size = UDim2.new(0,50,0,50)
-btnHide.Position = UDim2.new(0,15,0,15)  -- Ă¢Â¬â€¦Ă¯Â¸Â Ă„ÂĂ¡Â»â€¢i position (gÄ‚Â³c trÄ‚Âªn trÄ‚Â¡i)
+btnHide.Position = UDim2.new(0,15,1,-15)
 
 local btnHideFrame = Instance.new('Frame', btnHide)
-btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- Ă¢Â¬â€¦Ă¯Â¸Â Ă„ÂĂ¡Â»â€¢i anchor point
+btnHideFrame.AnchorPoint = Vector2.new(0, 1)
 btnHideFrame.Size = UDim2.new(0,50,0,50)
-btnHideFrame.Position = UDim2.new(0,0,0,0)  -- Ă¢Â¬â€¦Ă¯Â¸Â Ă„ÂĂ¡Â»â€¢i position
+btnHideFrame.Position = UDim2.new(0,0,1,0)
 btnHideFrame.Name = "dut dit"
 btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
 btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
@@ -182,16 +182,17 @@ imgHide.Position = UDim2.new(.5,0,.5,0)
 local UICornerBtnHide = Instance.new("UICorner")
 UICornerBtnHide.Parent = btnHideFrame
 UICornerBtnHide.CornerRadius = UDim.new(1,0)
+
 Library.ToggleUI = function()
 	getgenv().UIToggled = not getgenv().UIToggled
     local sizeXY = getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30)
 	TweenService:Create(imgHide, TweenInfo.new(DisableAnimation and 0 or .25), {Size = UDim2.new(0,sizeXY,0,sizeXY)}):Play()
 	TweenService:Create(btnHideFrame, TweenInfo.new(DisableAnimation and 0 or .25), {BackgroundTransparency = getgenv().UIToggled and 0 or .25}):Play()
-	if game.CoreGui:FindFirstChild("Kissan Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Kissan Hub GUI"then b.Enabled= getgenv().UIToggled end end end
+	if game.CoreGui:FindFirstChild("Nousigi Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Nousigi Hub GUI"then b.Enabled= getgenv().UIToggled end end end
 end
 
 Library.DestroyUI = function()
-    if game.CoreGui:FindFirstChild("Kissan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Kissan Hub") then v:Destroy() end end end
+    if game.CoreGui:FindFirstChild("Nousigi Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nousigi Hub") then v:Destroy() end end end
 end
 
 
