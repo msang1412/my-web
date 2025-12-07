@@ -2738,7 +2738,7 @@ end)
     ActionSide.BackgroundTransparency = 1
     ActionSide.AnchorPoint = Vector2.new(1, 0.5)
     ActionSide.Position = UDim2.new(1, -8, 0.5, 0)
-    ActionSide.Size = UDim2.new(0, 100, 0, 26) -- ⭐ DÀI 125px
+    ActionSide.Size = UDim2.new(0, 95, 0, 28)
 
     ActionButton.Name = "ActionButton"
     ActionButton.Parent = ActionSide
@@ -2846,6 +2846,6 @@ end
 
 end
 
-Library.CreateNoti({Title = 'UI Library', Desc = 'The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI.', ShowTime = 10}, true)
+Library.CreateNoti({Title = 'UI Lọ', Desc = 'The UI automatically hides once executed.\nPress the button at the bottom-left of the screen to show the GUI.', ShowTime = 10}, true)
 
 return Library
