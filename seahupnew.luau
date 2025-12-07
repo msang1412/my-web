@@ -2738,7 +2738,7 @@ end)
     ActionSide.BackgroundTransparency = 1
     ActionSide.AnchorPoint = Vector2.new(1, 0.5)
     ActionSide.Position = UDim2.new(1, -8, 0.5, 0)
-    ActionSide.Size = UDim2.new(0, 95, 0, 28)
+    ActionSide.Size = UDim2.new(0, 100, 0, 28)
 
     ActionButton.Name = "ActionButton"
     ActionButton.Parent = ActionSide
@@ -2748,7 +2748,7 @@ end)
     ActionButton.BackgroundColor3 = getgenv().UIColor["Button Color"] -- ⭐ MÀU CŨ
     ActionButton.BorderSizePixel = 0
 
-    ActionButtonCorner.CornerRadius = UDim.new(1, 0) -- ⭐ BO TRÒN FULL NHƯ ẢNH
+    ActionButtonCorner.CornerRadius = UDim.new(0,75, 0) -- ⭐ BO TRÒN FULL NHƯ ẢNH
     ActionButtonCorner.Parent = ActionButton
 
     -- TEXT
