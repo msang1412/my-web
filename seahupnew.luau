@@ -2696,14 +2696,19 @@ end)
     MainContainer.Name = Title.."_NewButton"
     MainContainer.Parent = Section
     MainContainer.BackgroundTransparency = 1
-    MainContainer.Size = UDim2.new(1, 0, 0, 45)
+    MainContainer.Size = UDim2.new(1, 0, 0, 42)
     MainContainer.LayoutOrder = 999
+
+    local ContainerLayout = Instance.new("UIListLayout")
+    ContainerLayout.Parent = MainContainer
+    ContainerLayout.SortOrder = Enum.SortOrder.LayoutOrder
+    ContainerLayout.Padding = UDim.new(0, 5)
 
     Background.Name = "Background"
     Background.Parent = MainContainer
     Background.AnchorPoint = Vector2.new(0.5, 0.5)
     Background.Position = UDim2.new(0.5, 0, 0.5, 0)
-    Background.Size = UDim2.new(1, -12, 1, 0)
+    Background.Size = UDim2.new(1, -10, 1, -5)
     Background.BackgroundColor3 = getgenv().UIColor["Background 1 Color"]
     Background.BorderSizePixel = 0
 
@@ -2725,6 +2730,7 @@ end)
     TitleLabel.TextColor3 = getgenv().UIColor["Text Color"]
     TitleLabel.TextSize = 14
     TitleLabel.TextXAlignment = Enum.TextXAlignment.Left
+    TitleLabel.TextYAlignment = Enum.TextYAlignment.Center
 
     ActionSide.Name = "ActionSide"
     ActionSide.Parent = Background
@@ -2819,6 +2825,10 @@ end)
         ActionHitbox.Active = b
         ActionButton.BackgroundTransparency = b and 0 or 0.5
         ActionText.TextTransparency = b and 0 or 0.5
+    end
+
+    function buttonInfo:SetSpacing(pixels)
+        ContainerLayout.Padding = UDim.new(0, pixels)
     end
 
     return buttonInfo
