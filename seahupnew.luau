@@ -427,7 +427,7 @@ function Library.CreateMain(Setting)
 	maingui.SliceCenter = Rect.new(15, 15, 175, 175)
 	maingui.SliceScale = 1.300
 	maingui.ImageColor3 = getgenv().UIColor["Border Color"]
-	maingui.ImageTransparency = 1
+	maingui.ImageTransparency = 0.3
 
 	maingui.ImageColor3 = getgenv().UIColor['Title Text Color']
 	local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
