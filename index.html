@@ -1,22 +1,42 @@
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/logo.png" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>gei | gei</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap"
-      rel="stylesheet"
-    />
-    <script type="module" crossorigin src="/assets/index-D4d7UFhC.js"></script>
-    <link rel="modulepreload" crossorigin href="/assets/lodash-B6UnrQxG.js">
-    <link rel="stylesheet" crossorigin href="/assets/index-CgBnJXsG.css">
-  </head>
-  <body class="min-h-screen">
-    <div id="root"></div>
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Total Executions</title>
+    <style>
+        body {
+            font-family: Arial;
+            background: #111;
+            color: #fff;
+            text-align: center;
+            margin-top: 120px;
+        }
+        .box {
+            font-size: 32px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
 
+<h1>Total Executions</h1>
+<div class="box" id="count">Loading...</div>
 
-  <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'99ac159d7ed9896a',t:'MTc2MjUxMDY4Mw=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+<script>
+function loadCount() {
+    fetch("counter.txt?cache=" + Date.now())
+        .then(res => res.text())
+        .then(num => {
+            document.getElementById("count").innerText = num;
+        });
+}
+
+// Load khi mở trang
+loadCount();
+
+// 5 giây cập nhật 1 lần (tự live)
+setInterval(loadCount, 5000);
+</script>
+
+</body>
 </html>
