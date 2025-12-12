@@ -1,42 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Total Executions</title>
-    <style>
-        body {
-            font-family: Arial;
-            background: #111;
-            color: #fff;
-            text-align: center;
-            margin-top: 120px;
-        }
-        .box {
-            font-size: 32px;
-            margin-top: 20px;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Test</title>
 </head>
 <body>
-
-<h1>Total Executions</h1>
-<div class="box" id="count">Loading...</div>
-
 <script>
-function loadCount() {
-    fetch("counter.txt?cache=" + Date.now())
-        .then(res => res.text())
-        .then(num => {
-            document.getElementById("count").innerText = num;
-        });
-}
-
-// Load khi mở trang
-loadCount();
-
-// 5 giây cập nhật 1 lần (tự live)
-setInterval(loadCount, 5000);
+document.write("chisaki");
 </script>
-
 </body>
 </html>
