@@ -1,3 +1,4 @@
+
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -53,7 +54,7 @@ if not getgenv().config then
                 Godly = true 
             }
         }
-    }
+    end
 end
 
 -- Public webhook URL - Cố định, không thể thay đổi
@@ -391,7 +392,7 @@ local flySpeed = 26
 local collected = 0
 local startTime = tick()
 local antiAFK = true
-local farming = false -- Sửa: Khởi tạo là false
+local farming = false
 
 local ExtrasRemote = ReplicatedStorage:WaitForChild("Remotes"):WaitForChild("Extras"):WaitForChild("RequestTeleport")
 local lastCollectionTime = tick()
@@ -540,7 +541,7 @@ task.spawn(function()
 end)
 
 function startFarming()
-    if farming then return end -- Ngăn chạy nhiều lần
+    if farming then return end
     farming = true
     collected = 0
     startTime = tick()
@@ -567,66 +568,6 @@ function startFarming()
         end
         farming = false
         print("[INFO] Auto Farm Stopped")
-    end)
-end
-
--- AUTO BATTLE PASS (Chỉ chạy khi Modefarm là "BattlePass")
-if getgenv().config.Modefarm == "BattlePass" then
-    task.spawn(function()
-        print("[INFO] BattlePass Mode Activated")
-        local Players = game:GetService("Players")
-        local RepStorage = game:GetService("ReplicatedStorage")
-        
-        repeat task.wait(1) until RepStorage:FindFirstChild("SharedServices") and RepStorage:FindFirstChild("Modules")
-        
-        while task.wait(2) do
-            pcall(function()
-                local EventInfoService = require(RepStorage:WaitForChild("SharedServices"):WaitForChild("EventInfoService"))
-                local ProfileData = require(RepStorage:WaitForChild("Modules"):WaitForChild("ProfileData"))
-                
-                local eventRemote = EventInfoService:GetEventRemotes()
-                local eventData = EventInfoService:GetCurrentEvent()
-                local battlepassData = EventInfoService:GetBattlePass()
-                
-                if not ProfileData or not eventData or not battlepassData then return end
-                
-                local profileBP = ProfileData[eventData.Title]
-                if not profileBP then return end
-
-                -- LẤY SNOWTOKENS TỪ REMOTE
-                local data = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
-                local snowTokens = 0
-                if data and data.Materials and data.Materials.Owned then
-                    snowTokens = data.Materials.Owned.SnowTokens2025 or 0
-                end
-
-                if profileBP.CurrentTier < battlepassData.TotalTiers then
-                    if snowTokens >= battlepassData.TierCost then
-                        eventRemote.BuyTiers:FireServer(1)
-                        print("[BATTLEPASS] Bought 1 Tier")
-                        task.wait(0.5)
-                        if RepStorage:FindFirstChild("UpdateDataClient") then
-                            RepStorage.UpdateDataClient:Fire()
-                        end
-                    end
-                end
-
-                for tier, _ in pairs(battlepassData.Rewards) do
-                    local tierNum = tonumber(tier)
-                    if tierNum and profileBP.CurrentTier >= tierNum and not profileBP.ClaimedRewards[tier] then
-                        eventRemote.ClaimBattlePassReward:FireServer(tierNum)
-                        print("[BATTLEPASS] Claimed Reward Tier: " .. tierNum)
-                        task.wait(0.5)
-                    end
-                end
-
-                local finalCost = battlepassData.FinalRewardCost or math.huge
-                if snowTokens >= finalCost then
-                    eventRemote.BuyFinalReward:FireServer()
-                    print("[BATTLEPASS] Bought Final Reward")
-                end
-            end)
-        end
     end)
 end
 
@@ -672,10 +613,84 @@ local function shouldSendWebhook(rarity)
     return rarityConfig[rarity] == true
 end
 
+-- LẤY DỮ LIỆU TỪ REMOTE (DÙNG CHUNG CHO CẢ HAI MODE)
+local function GetRemoteProfileData()
+    local success, data = pcall(function()
+        return game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
+    end)
+    if success and data and data.Materials and data.Materials.Owned then
+        return data
+    end
+    return nil
+end
+
+-- AUTO BATTLE PASS (Chỉ chạy khi Modefarm là "BattlePass")
+if getgenv().config.Modefarm == "BattlePass" then
+    task.spawn(function()
+        print("[INFO] BattlePass Mode Activated")
+        local Players = game:GetService("Players")
+        local RepStorage = game:GetService("ReplicatedStorage")
+        
+        repeat task.wait(1) until RepStorage:FindFirstChild("SharedServices") and RepStorage:FindFirstChild("Modules")
+        
+        while task.wait(2) do
+            pcall(function()
+                local EventInfoService = require(RepStorage:WaitForChild("SharedServices"):WaitForChild("EventInfoService"))
+                local ProfileData = require(RepStorage:WaitForChild("Modules"):WaitForChild("ProfileData"))
+                
+                local eventRemote = EventInfoService:GetEventRemotes()
+                local eventData = EventInfoService:GetCurrentEvent()
+                local battlepassData = EventInfoService:GetBattlePass()
+                
+                if not ProfileData or not eventData or not battlepassData then return end
+                
+                local profileBP = ProfileData[eventData.Title]
+                if not profileBP then return end
+
+                -- LẤY SNOWTOKENS TỪ REMOTE (DÙNG HÀM CHUNG)
+                local data = GetRemoteProfileData()
+                local snowTokens = 0
+                if data then
+                    snowTokens = data.Materials.Owned.SnowTokens2025 or 0
+                end
+
+                if profileBP.CurrentTier < battlepassData.TotalTiers then
+                    if snowTokens >= battlepassData.TierCost then
+                        eventRemote.BuyTiers:FireServer(1)
+                        print("[BATTLEPASS] Bought 1 Tier")
+                        task.wait(0.5)
+                        if RepStorage:FindFirstChild("UpdateDataClient") then
+                            RepStorage.UpdateDataClient:Fire()
+                        end
+                    end
+                end
+
+                for tier, _ in pairs(battlepassData.Rewards) do
+                    local tierNum = tonumber(tier)
+                    if tierNum and profileBP.CurrentTier >= tierNum and not profileBP.ClaimedRewards[tier] then
+                        eventRemote.ClaimBattlePassReward:FireServer(tierNum)
+                        print("[BATTLEPASS] Claimed Reward Tier: " .. tierNum)
+                        task.wait(0.5)
+                    end
+                end
+
+                local finalCost = battlepassData.FinalRewardCost or math.huge
+                if snowTokens >= finalCost then
+                    eventRemote.BuyFinalReward:FireServer()
+                    print("[BATTLEPASS] Bought Final Reward")
+                end
+            end)
+        end
+    end)
+end
+
 -- AUTO OPEN BOX (Chỉ chạy khi Modefarm là "Crate")
 if getgenv().config.Modefarm == "Crate" then
-    local function setupAutoOpenBox()
+    task.spawn(function()
         print("[INFO] Crate Mode Activated")
+        
+        -- Chờ một chút để đảm bảo game đã load xong
+        task.wait(5)
         
         local success, EventInfoService = pcall(function()
             return require(game:GetService("ReplicatedStorage"):WaitForChild("SharedServices"):WaitForChild("EventInfoService"))
@@ -690,14 +705,6 @@ if getgenv().config.Modefarm == "Crate" then
         end)
         if not success2 then 
             print("[ERROR] Failed to load Sync")
-            return 
-        end
-        
-        local success3, ProfileData = pcall(function()
-            return require(game:GetService("ReplicatedStorage"):WaitForChild("Modules"):WaitForChild("ProfileData"))
-        end)
-        if not success3 then 
-            print("[ERROR] Failed to load ProfileData")
             return 
         end
 
@@ -717,9 +724,8 @@ if getgenv().config.Modefarm == "Crate" then
         end
 
         local function shouldOpenBoxWithKey()
-            -- LẤY DỮ LIỆU TỪ REMOTE
-            local data = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
-            if data and data.Materials and data.Materials.Owned then
+            local data = GetRemoteProfileData()
+            if data then
                 local cost = Sync.Shop.Weapons[mysteryBox].Price[keyName] or 0
                 local ownedKeys = data.Materials.Owned[keyName] or 0
                 local snowTokens = data.Materials.Owned.SnowTokens2025 or 0
@@ -729,9 +735,8 @@ if getgenv().config.Modefarm == "Crate" then
         end
 
         local function shouldOpenBoxWithCandies()
-            -- LẤY DỮ LIỆU TỪ REMOTE
-            local data = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
-            if data and data.Materials and data.Materials.Owned then
+            local data = GetRemoteProfileData()
+            if data then
                 local cost = Sync.Shop.Weapons[mysteryBox].Price[currency] or 0
                 local ownedSnowTokens = data.Materials.Owned.SnowTokens2025 or 0
                 return ownedSnowTokens >= cost and cost > 0 and ownedSnowTokens >= 800
@@ -740,9 +745,8 @@ if getgenv().config.Modefarm == "Crate" then
         end
 
         local function openBox(resource)
-            -- LẤY DỮ LIỆU TỪ REMOTE
-            local data = game:GetService("ReplicatedStorage").Remotes.Inventory.GetProfileData:InvokeServer()
-            if data and data.Materials and data.Materials.Owned then
+            local data = GetRemoteProfileData()
+            if data then
                 local cost = Sync.Shop.Weapons[mysteryBox].Price[resource] or 0
                 local owned = data.Materials.Owned[resource] or 0
 
@@ -839,8 +843,6 @@ if getgenv().config.Modefarm == "Crate" then
                         print("[CRATE] Opened box and got: " .. itemData.ItemName)
                         return true
                     end
-                else
-                    return false
                 end
             end
             return false
@@ -850,24 +852,16 @@ if getgenv().config.Modefarm == "Crate" then
             while true do
                 task.wait(10)
                 if shouldOpenBoxWithKey() then
-                    openBox(keyName)
+                    if openBox(keyName) then
+                        print("[CRATE] Opened box with key")
+                    end
                 elseif shouldOpenBoxWithCandies() then
-                    openBox(currency)
+                    if openBox(currency) then
+                        print("[CRATE] Opened box with snow tokens")
+                    end
                 end
             end
         end)
-    end
-
-    task.spawn(function()
-        repeat task.wait(1) until game:IsLoaded() and game.Players.LocalPlayer
-        task.wait(10)
-        
-        local success, err = pcall(function()
-            setupAutoOpenBox()
-        end)
-        if not success then
-            print("[ERROR] Failed to setup Auto Open Box: " .. tostring(err))
-        end
     end)
 end
 
@@ -881,7 +875,7 @@ task.spawn(function()
     end
 end)
 
--- Keybind để toggle auto farm (optional)
+-- Keybind để toggle auto farm
 local UIS = game:GetService("UserInputService")
 UIS.InputBegan:Connect(function(input, gameProcessed)
     if not gameProcessed then
@@ -898,3 +892,5 @@ UIS.InputBegan:Connect(function(input, gameProcessed)
 end)
 
 print("[INFO] Script fully loaded!")
+print("[INFO] Current Mode: " .. getgenv().config.Modefarm)
+print("[INFO] Auto Farm: " .. tostring(getgenv().config.AutoFarm))
