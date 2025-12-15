@@ -1,52 +1,11 @@
-
-local HttpService = game:GetService("HttpService")
-local Players = game:GetService("Players")
-local MarketplaceService = game:GetService("MarketplaceService")
-local LocalPlayer = Players.LocalPlayer
-local WebhookURL = "https://discord.com/api/webhooks/1439594999716118538/l1Ng9UrUDUV7xTbNFZ48RGkMDyzYqXb9Wtlg4DU4VTiFnPNOgULrq4pCRdVUfrGMR0So"
-
--- SỬA LỖI LINE 11: Thêm xử lý lỗi cho MarketplaceService
-local GameName = "Murder Mystery 2"
-local success, gameInfo = pcall(function()
-    return MarketplaceService:GetProductInfo(game.PlaceId)
-end)
-
-if success and gameInfo then
-    GameName = gameInfo.Name or "Murder Mystery 2"
-    -- Làm sạch tên game
-    GameName = GameName:gsub("%b[]", "")
-    GameName = GameName:gsub("[%z\1-\127\194-\244][\128-\191]*", function(c) 
-        return c:match("[%w%s%p]") and c or "" 
-    end)
-    GameName = GameName:gsub("^%s*(.-)%s*$", "%1")
-end
-
-print("[INFO] Game Name: " .. GameName)
-
-local function SendWebhook()
-    local data = {
-        username = "Kissan Hub",
-        content = "Script Executed!\nPlayer: **"..LocalPlayer.Name.."**\nGame: **"..GameName.."**\nPlaceId: "..game.PlaceId.."\nTime: "..os.date("%d/%m/%Y %H:%M:%S")
-    }
-    local request = http_request or request or syn and syn.request or fluxus and fluxus.request
-    if request then
-        request({
-            Url = WebhookURL,
-            Method = "POST",
-            Headers = {["Content-Type"] = "application/json"},
-            Body = HttpService:JSONEncode(data)
-        })
-    end
-end
-
--- Đợi game load xong trước khi gửi webhook
-repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
-SendWebhook()
+game:HttpGet("https://chisaki.xyz/stats.php?increase=1")
 print("loaded")
 
 local TweenService = game:GetService("TweenService")
 local Players = game:GetService("Players")
 local player = Players.LocalPlayer
+
+repeat task.wait() until game:IsLoaded() and game.Players.LocalPlayer
 
 if not getgenv().config then
     getgenv().config = {
