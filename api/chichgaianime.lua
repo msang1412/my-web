@@ -1,9 +1,8 @@
-print("mmb")
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
 local LocalPlayer = Players.LocalPlayer
-game:HttpGet("https://chisaki.xyz/stats.php?increase=1")
+
 local GameName = "Unknown Game"
 pcall(function()
     GameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
