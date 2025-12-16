@@ -1,4 +1,4 @@
-
+print("mmb")
 local HttpService = game:GetService("HttpService")
 local Players = game:GetService("Players")
 local MarketplaceService = game:GetService("MarketplaceService")
@@ -722,3 +722,4 @@ task.spawn(function()
         startFarming()
     end
 end)
+print("gg")
