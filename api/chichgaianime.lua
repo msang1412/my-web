@@ -423,17 +423,71 @@ local function updateCollectionTime()
     remainingTime = 300
 end
 
+-- Hàm teleport với chế độ ngẫu nhiên và đếm giây
 local function performTeleport()
-    if isOnCooldown then return end
-    local args = {"Disguises"}
-    local success, result = pcall(function()
-        return ExtrasRemote:InvokeServer(unpack(args))
+    if isOnCooldown then 
+        print("[Teleport System] Đang trong thời gian chờ...")
+        return 
+    end
+    
+    -- Đảm bảo random seed khác nhau
+    math.randomseed(tick())
+    
+    -- Danh sách chế độ có thể teleport
+    local modes = {"Standard", "Disguises", "Assassin"}
+    local modeNgauNhien = modes[math.random(1, #modes)]
+    
+    print("[Teleport System] Đang thử dịch chuyển đến: " .. modeNgauNhien)
+    print("[Countdown] 3...")
+    task.wait(1)
+    print("[Countdown] 2...")
+    task.wait(1)
+    print("[Countdown] 1...")
+    task.wait(1)
+    
+    -- Thử teleport
+    local success, errorMsg = pcall(function()
+        return ExtrasRemote:InvokeServer(modeNgauNhien)
     end)
+    
     if success then
+        print("[Teleport System] ✓ Đã dịch chuyển thành công đến: " .. modeNgauNhien)
+        print("[Teleport Success] Bắt đầu đếm ngược 60 giây...")
         isOnCooldown = true
-        task.delay(60, function()
-            isOnCooldown = false
+        
+        -- Đếm ngược 60 giây với print mỗi giây
+        local waitTime = 60
+        task.spawn(function()
+            for i = waitTime, 1, -1 do
+                if not isOnCooldown then break end
+                -- In mỗi giây cho 10 giây đầu, sau đó in mỗi 5 giây
+                if i >= 50 or i % 5 == 0 or i <= 10 then
+                    print("[Cooldown] Còn " .. i .. " giây có thể teleport lại")
+                end
+                task.wait(1)
+            end
         end)
+        
+        -- Tự động tắt cooldown sau 60 giây
+        task.delay(waitTime, function()
+            isOnCooldown = false
+            print("[Teleport Ready] ✓ Đã có thể teleport lại!")
+        end)
+    else
+        warn("[Teleport System] ✗ Lỗi khi dịch chuyển: " .. tostring(errorMsg))
+        
+        -- Thử chế độ khác nếu thất bại
+        task.wait(2)
+        for _, backupMode in ipairs(modes) do
+            if backupMode ~= modeNgauNhien then
+                print("[Backup] Đang thử chế độ dự phòng: " .. backupMode)
+                pcall(function()
+                    ExtrasRemote:InvokeServer(backupMode)
+                    print("[Backup Success] ✓ Đã teleport đến: " .. backupMode)
+                end)
+                break
+            end
+        end
     end
 end
 
@@ -491,36 +545,68 @@ end
 task.spawn(function()
     while true do
         task.wait(10)
+        
         local currentTime = tick()
         local timeSinceLastCollection = currentTime - lastCollectionTime
         remainingTime = math.max(0, 300 - timeSinceLastCollection)
+        
+        -- Hiển thị thời gian còn lại trước khi teleport
+        if remainingTime > 0 then
+            if remainingTime <= 60 then
+                -- In mỗi 10 giây khi còn dưới 1 phút
+                if remainingTime % 10 == 0 or remainingTime <= 10 then
+                    print("[Auto-Teleport Timer] Sẽ teleport sau: " .. math.floor(remainingTime) .. " giây")
+                end
+            elseif remainingTime % 30 == 0 then
+                -- In mỗi 30 giây khi còn trên 1 phút
+                print("[Auto-Teleport Timer] Sẽ teleport sau: " .. math.floor(remainingTime) .. " giây")
+            end
+        end
+        
         if timeSinceLastCollection >= 300 and not isOnCooldown then
+            print("[Auto-Teleport] ⚠️ Đã 5 phút không farm được!")
+            print("[Auto-Teleport] 🔍 Đang kiểm tra candy trong 15 giây...")
+            
             local hasCollectedRecently = false
+            
+            -- Thử farm trong 15 giây với đếm ngược
             local checkStartTime = tick()
-            while tick() - checkStartTime < 15 do
+            local checkTime = 15
+            while tick() - checkStartTime < checkTime do
+                local timeLeft = checkTime - (tick() - checkStartTime)
+                if timeLeft % 5 == 0 or timeLeft <= 3 then
+                    print("[Farm Check] Còn " .. math.floor(timeLeft) .. " giây để kiểm tra...")
+                end
+                
                 local targetCandy = getNearestCandy()
                 if targetCandy then
+                    print("[Farm Check] 🍬 Tìm thấy candy ở khoảng cách: " .. math.floor((rootPart.Position - targetCandy.Position).Magnitude) .. " studs")
+                    print("[Farm Check] 🚀 Đang bay đến candy...")
                     local success = teleportToCandy(targetCandy)
                     if success then
                         collected += 1
                         pcall(function() collectSound:Play() end)
                         updateCollectionTime()
                         hasCollectedRecently = true
+                        print("[Farm Check] ✅ Đã farm thành công! Reset timer 5 phút")
+                        print("[Farm Stats] Tổng candy đã farm: " .. collected)
                         break
                     else
-                        break
+                        print("[Farm Check] ❌ Không thể farm candy này")
                     end
-                else
-                    task.wait(1)
                 end
+                task.wait(1)
             end
+            
+            -- Nếu vẫn không farm được -> Teleport ngẫu nhiên
             if not hasCollectedRecently then
+                print("[Auto-Teleport] ❌ Không tìm thấy candy sau 15 giây")
+                print("[Auto-Teleport] 🌀 Đang chọn chế độ ngẫu nhiên để teleport...")
                 performTeleport()
             end
         end
     end
 end)
-
 function startFarming()
     farming = true
     collected = 0
