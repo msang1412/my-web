@@ -1,3 +1,4 @@
+
 getgenv().readdata = function(foldername, filename, tabs)
 end
 getgenv().save = function(foldername, filename, filecontent)
@@ -653,7 +654,7 @@ end)
 	ScrollTab.BackgroundTransparency = 0.9990000128746033
 	ScrollTab.BorderColor3 = Color3.fromRGB(0, 0, 0)
 	ScrollTab.BorderSizePixel = 0
-	ScrollTab.Size = UDim2.new(1, 0, 1, -45)
+	ScrollTab.Size = UDim2.new(1, 0, 1, 0)
 	ScrollTab.Name = "ScrollTab"
 	ScrollTab.Parent = LayersTab
 
@@ -674,6 +675,7 @@ end)
 	ScrollTab.ChildRemoved:Connect(UpSize)
 	UpSize()
 
+--[[
 	Info.AnchorPoint = Vector2.new(0, 1)
 	Info.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
 	Info.BackgroundTransparency = 0.9990000128746033
@@ -728,7 +730,7 @@ end)
 	
 	UICorner5.CornerRadius = UDim.new(0, 1000)
 	UICorner5.Parent = LogoFrame
-
+]]
 	--// Layers
 	local Layers = Instance.new("Frame");
 	local LayersFolder = Instance.new("Folder");
@@ -2597,4 +2599,3 @@ end)
 	return Tabs
 end
 return WazureV1
-
