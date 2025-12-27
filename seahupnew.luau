@@ -1,8 +1,7 @@
-
-if getgenv().Nyan then 
-	if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
+if getgenv().Kissan then 
+	if game.CoreGui:FindFirstChild("Kissan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Kissan Hub") then v:Destroy() end end end
 end
-getgenv().Nyan = true
+getgenv().Kissan = true
 
 local DisableAnimation = game.Players.LocalPlayer.PlayerGui:FindFirstChild('TouchGui')
 
@@ -135,7 +134,7 @@ end
 
 Library_Function.Gui = Instance.new('ScreenGui')
 Library_Function.Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.Gui.Name = 'Nyan Hub GUI'
+Library_Function.Gui.Name = 'Kissan Hub GUI'
 Library_Function.Gui.Enabled = false
 
 getgenv().ReadyForGuiLoaded = false
@@ -150,11 +149,11 @@ end)
 
 Library_Function.NotiGui = Instance.new('ScreenGui')
 Library_Function.NotiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.NotiGui.Name = 'Nyan Hub Notification'
+Library_Function.NotiGui.Name = 'Kissan Hub Notification'
 
 Library_Function.HideGui = Instance.new('ScreenGui')
 Library_Function.HideGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.HideGui.Name = 'Nyan Hub Btn'
+Library_Function.HideGui.Name = 'Kissan Hub Btn'
 
 
 local btnHide = Instance.new('TextButton', Library_Function.HideGui) 
@@ -164,9 +163,35 @@ btnHide.AnchorPoint = Vector2.new(0, 1)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä�
 btnHide.Size = UDim2.new(0,50,0,50)
 btnHide.Position = UDim2.new(0,15,1,-15)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position (gĂ„â€Ă‚Â³c trĂ„â€Ă‚Âªn trĂ„â€Ă‚Â¡i)
 
- 
+local btnHideFrame = Instance.new('Frame', btnHide)
+btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i anchor point
+btnHideFrame.Size = UDim2.new(0,50,0,50)
+btnHideFrame.Position = UDim2.new(0,0,0,0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position
+btnHideFrame.Name = "dut dit"
+btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
+btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
+
+local imgHide = Instance.new('ImageLabel', btnHide)
+imgHide.AnchorPoint = Vector2.new(0, 0)
+imgHide.Image = getgenv().UIColor["Logo Image"]
+imgHide.BackgroundTransparency = 1
+imgHide.Size = UDim2.new(0,getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30),0, getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30))
+imgHide.AnchorPoint = Vector2.new(.5,.5)
+imgHide.Position = UDim2.new(.5,0,.5,0)
+
+local UICornerBtnHide = Instance.new("UICorner")
+UICornerBtnHide.Parent = btnHideFrame
+UICornerBtnHide.CornerRadius = UDim.new(1,0)
+Library.ToggleUI = function()
+	getgenv().UIToggled = not getgenv().UIToggled
+    local sizeXY = getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30)
+	TweenService:Create(imgHide, TweenInfo.new(DisableAnimation and 0 or .25), {Size = UDim2.new(0,sizeXY,0,sizeXY)}):Play()
+	TweenService:Create(btnHideFrame, TweenInfo.new(DisableAnimation and 0 or .25), {BackgroundTransparency = getgenv().UIToggled and 0 or .25}):Play()
+	if game.CoreGui:FindFirstChild("Kissan Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Kissan Hub GUI"then b.Enabled= getgenv().UIToggled end end end
+end
+
 Library.DestroyUI = function()
-    if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
+    if game.CoreGui:FindFirstChild("Kissan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Kissan Hub") then v:Destroy() end end end
 end
 
 
@@ -258,7 +283,7 @@ local libCreateNoti = function(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Nyan Hub</font> "..getgenv().TitleNameNoti
+	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Kissan Hub</font> "..getgenv().TitleNameNoti
 	
 	TextLabelNoti.Name = "TextLabelNoti"
 	TextLabelNoti.Parent = Topnoti
@@ -409,7 +434,7 @@ function Library.CreateMain(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Nyan Hub</font> " .. getgenv().MainDesc
+	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Kissan Hub</font> " .. getgenv().MainDesc
 
 	MainContainer = Instance.new("ImageLabel")
 	MainContainer.Name = "MainContainer"
@@ -511,14 +536,18 @@ SettingsButton.MouseLeave:Connect(function()
 end)
 
 SettingsButton.MouseButton1Click:Connect(function()
-    warn("hello")
+    Library.CreateNoti({
+        Title = "Setting",
+        Desc = "ko co gi ca",
+        ShowTime = 3
+    })
 end)
 
 	local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Nyan Hub</font> " .. getgenv().MainDesc
+	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Kissan Hub</font> " .. getgenv().MainDesc
 
 	PageControl.Name = "Background1"
 	PageControl.Parent = Concacmain
