@@ -1,7 +1,7 @@
-if getgenv().Kissan then 
-	if game.CoreGui:FindFirstChild("Kissan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Kissan Hub") then v:Destroy() end end end
+if getgenv().Nyan then 
+	if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
 end
-getgenv().Kissan = true
+getgenv().Nyan = true
 
 local DisableAnimation = game.Players.LocalPlayer.PlayerGui:FindFirstChild('TouchGui')
 
@@ -9,7 +9,7 @@ local T1UIColor = {
 	["Border Color"] = Color3.fromRGB(255, 64, 64),
 	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
 	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Logo Image"] = "http://www.roblox.com/asset/?id=134369701407905",
+	["Logo Image"] = "http://www.roblox.com/asset/?id=94883123849826",
 	["Search Icon Color"] = Color3.fromRGB(255, 255, 255),
 	["Search Icon Highlight Color"] = Color3.fromRGB(255, 64, 64),
 	["GUI Text Color"] = Color3.fromRGB(230, 230, 230),
@@ -48,7 +48,7 @@ local IndexUIColor = {
 	["Border Color"] = Color3.fromRGB(184, 212, 255),
 	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
 	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Logo Image"] = "rbxassetid://134369701407905",
+	["Logo Image"] = "rbxassetid://94883123849826",
 	["Search Icon Color"] = Color3.fromRGB(255, 255, 255),
 	["Search Icon Highlight Color"] = Color3.fromRGB(184, 212, 255),
 	["GUI Text Color"] = Color3.fromRGB(230, 230, 230),
@@ -134,7 +134,7 @@ end
 
 Library_Function.Gui = Instance.new('ScreenGui')
 Library_Function.Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.Gui.Name = 'Kissan Hub GUI'
+Library_Function.Gui.Name = 'Nyan Hub GUI'
 Library_Function.Gui.Enabled = false
 
 getgenv().ReadyForGuiLoaded = false
@@ -149,11 +149,11 @@ end)
 
 Library_Function.NotiGui = Instance.new('ScreenGui')
 Library_Function.NotiGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.NotiGui.Name = 'Kissan Hub Notification'
+Library_Function.NotiGui.Name = 'Nyan Hub Notification'
 
 Library_Function.HideGui = Instance.new('ScreenGui')
 Library_Function.HideGui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
-Library_Function.HideGui.Name = 'Kissan Hub Btn'
+Library_Function.HideGui.Name = 'Nyan Hub Btn'
 
 
 local btnHide = Instance.new('TextButton', Library_Function.HideGui) 
@@ -187,11 +187,11 @@ Library.ToggleUI = function()
     local sizeXY = getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30)
 	TweenService:Create(imgHide, TweenInfo.new(DisableAnimation and 0 or .25), {Size = UDim2.new(0,sizeXY,0,sizeXY)}):Play()
 	TweenService:Create(btnHideFrame, TweenInfo.new(DisableAnimation and 0 or .25), {BackgroundTransparency = getgenv().UIToggled and 0 or .25}):Play()
-	if game.CoreGui:FindFirstChild("Kissan Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Kissan Hub GUI"then b.Enabled= getgenv().UIToggled end end end
+	if game.CoreGui:FindFirstChild("Nyan Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Nyan Hub GUI"then b.Enabled= getgenv().UIToggled end end end
 end
 
 Library.DestroyUI = function()
-    if game.CoreGui:FindFirstChild("Kissan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Kissan Hub") then v:Destroy() end end end
+    if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
 end
 
 
@@ -283,7 +283,7 @@ local libCreateNoti = function(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Kissan Hub</font> "..getgenv().TitleNameNoti
+	TextLabelNoti.Text = "<font color=\"rgb(" .. color .. ")\">Nyan Hub</font> "..getgenv().TitleNameNoti
 	
 	TextLabelNoti.Name = "TextLabelNoti"
 	TextLabelNoti.Parent = Topnoti
@@ -434,7 +434,7 @@ function Library.CreateMain(Setting)
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Kissan Hub</font> " .. getgenv().MainDesc
+	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Nyan Hub</font> " .. getgenv().MainDesc
 
 	MainContainer = Instance.new("ImageLabel")
 	MainContainer.Name = "MainContainer"
@@ -536,18 +536,14 @@ SettingsButton.MouseLeave:Connect(function()
 end)
 
 SettingsButton.MouseButton1Click:Connect(function()
-    Library.CreateNoti({
-        Title = "Setting",
-        Desc = "ko co gi ca",
-        ShowTime = 3
-    })
+    warn("hello")
 end)
 
 	local colorR = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[1])
 	local colorG = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[2])
 	local colorB = tostring(Library_Function.Getcolor(getgenv().UIColor['Title Text Color'])[3])
 	local color = colorR .. ',' .. colorG .. ',' .. colorB
-	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Kissan Hub</font> " .. getgenv().MainDesc
+	TextLabelMain.Text = "<font color=\"rgb("..color..")\">Nyan Hub</font> " .. getgenv().MainDesc
 
 	PageControl.Name = "Background1"
 	PageControl.Parent = Concacmain
