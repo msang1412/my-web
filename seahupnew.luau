@@ -1,3 +1,4 @@
+
 if getgenv().Nyan then 
 	if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
 end
@@ -9,7 +10,7 @@ local T1UIColor = {
 	["Border Color"] = Color3.fromRGB(255, 64, 64),
 	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
 	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Logo Image"] = "http://www.roblox.com/asset/?id=100473748960558",
+	["Logo Image"] = "http://www.roblox.com/asset/?id=138706932256796",
 	["Search Icon Color"] = Color3.fromRGB(255, 255, 255),
 	["Search Icon Highlight Color"] = Color3.fromRGB(255, 64, 64),
 	["GUI Text Color"] = Color3.fromRGB(230, 230, 230),
@@ -48,7 +49,7 @@ local IndexUIColor = {
 	["Border Color"] = Color3.fromRGB(184, 212, 255),
 	["Click Effect Color"] = Color3.fromRGB(230, 230, 230),
 	["Setting Icon Color"] = Color3.fromRGB(230, 230, 230),
-	["Logo Image"] = "rbxassetid://100473748960558",
+	["Logo Image"] = "rbxassetid://138706932256796",
 	["Search Icon Color"] = Color3.fromRGB(255, 255, 255),
 	["Search Icon Highlight Color"] = Color3.fromRGB(184, 212, 255),
 	["GUI Text Color"] = Color3.fromRGB(230, 230, 230),
@@ -163,33 +164,7 @@ btnHide.AnchorPoint = Vector2.new(0, 1)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä�
 btnHide.Size = UDim2.new(0,50,0,50)
 btnHide.Position = UDim2.new(0,15,1,-15)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position (gĂ„â€Ă‚Â³c trĂ„â€Ă‚Âªn trĂ„â€Ă‚Â¡i)
 
-local btnHideFrame = Instance.new('Frame', btnHide)
-btnHideFrame.AnchorPoint = Vector2.new(0, 0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i anchor point
-btnHideFrame.Size = UDim2.new(0,50,0,50)
-btnHideFrame.Position = UDim2.new(0,0,0,0)  -- Ä‚Â¢Ă‚Â¬Ă¢â‚¬Â¦Ä‚Â¯Ă‚Â¸Ă‚Â Ä‚â€Ă‚ÂÄ‚Â¡Ă‚Â»Ă¢â‚¬Â¢i position
-btnHideFrame.Name = "dut dit"
-btnHideFrame.BackgroundColor3 = Color3.fromRGB(255,255,255)
-btnHideFrame.BackgroundTransparency = getgenv().UIToggled and 0 or .25
-
-local imgHide = Instance.new('ImageLabel', btnHide)
-imgHide.AnchorPoint = Vector2.new(0, 0)
-imgHide.Image = getgenv().UIColor["Logo Image"]
-imgHide.BackgroundTransparency = 1
-imgHide.Size = UDim2.new(0,getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30),0, getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30))
-imgHide.AnchorPoint = Vector2.new(.5,.5)
-imgHide.Position = UDim2.new(.5,0,.5,0)
-
-local UICornerBtnHide = Instance.new("UICorner")
-UICornerBtnHide.Parent = btnHideFrame
-UICornerBtnHide.CornerRadius = UDim.new(1,0)
-Library.ToggleUI = function()
-	getgenv().UIToggled = not getgenv().UIToggled
-    local sizeXY = getgenv().UIToggled and (getgenv().T1 and 30 or 40) or (getgenv().T1 and 25 or 30)
-	TweenService:Create(imgHide, TweenInfo.new(DisableAnimation and 0 or .25), {Size = UDim2.new(0,sizeXY,0,sizeXY)}):Play()
-	TweenService:Create(btnHideFrame, TweenInfo.new(DisableAnimation and 0 or .25), {BackgroundTransparency = getgenv().UIToggled and 0 or .25}):Play()
-	if game.CoreGui:FindFirstChild("Nyan Hub GUI")then for a,b in ipairs(game.CoreGui:GetChildren())do if b.Name=="Nyan Hub GUI"then b.Enabled= getgenv().UIToggled end end end
-end
-
+ 
 Library.DestroyUI = function()
     if game.CoreGui:FindFirstChild("Nyan Hub GUI") then for i, v in ipairs(game.CoreGui:GetChildren()) do if string.find(v.Name,  "Nyan Hub") then v:Destroy() end end end
 end
