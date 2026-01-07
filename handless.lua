@@ -6,6 +6,18 @@ local ps = {
     DeSet2016     = "nBlPHArNcx",
     NguaSon2023   = "nBlPHArNcx",
     XxS0nD0xX2020 = "bGm6GQ6ZVb",
+    XxGio_QUANGXX     = "bGm6GQ6ZVb",
+    GiangGioiXuat2021   = "tV0pYMpaUr",
+    HoangNamManh = "tV0pYMpaUr",
+    DucCuong14VN     = "JUGHWiUw0T",
+    Gh3p_Khang   = "JUGHWiUw0T",
+    Ga_Long2007 = "ii9S5SkSsv",
+    TriChuaCuongVN     = "ii9S5SkSsv",
+    GiangBau42   = "Kg8iGai7fZ",
+    XxPhongChieuSoixX201 = "Kg8iGai7fZ",
+    OanhChop20     = "LtkncoBMHr",
+    H0aLua70   = "LtkncoBMHr",
+    Ghep_Minh = "BqL447X6LZ",
 }
 
 -- Config
