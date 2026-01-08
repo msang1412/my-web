@@ -19,8 +19,8 @@ local ps = {
     XayThanCu0ng   = "xTBHiIhnz4",
     GiangVitCap = "JzIF0s4mHr",
     GIO_Soi201237   = "JzIF0s4mHr",
-    TaoChuaDem = "KJPoPYtx0o",
-    HoaThanBac     = "KJPoPYtx0o",
+    TaoChuaDem = "FlisH65lpG",
+    HoaThanBac     = "FlisH65lpG",
     Phu0ngXinh2007   = "byfJPkPozQ",
     Ph0ngLaiVN = "byfJPkPozQ",
 }
