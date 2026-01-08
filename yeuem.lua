@@ -27,7 +27,7 @@ local ps = {
 
 -- Config
 getgenv().Config = {
-    ['Lock Level'] = 676,
+    ['Lock Level'] = 567,
     ['Lock Stat'] = 700,
     ['Multi PS'] = true,
     ['Private Code'] = {}
