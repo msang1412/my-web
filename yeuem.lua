@@ -1,9 +1,5 @@
-getgenv().Config = {
-  ['Lock Level'] = 375,
-  ['Lock Stat'] = 700,
-  ['Multi PS'] = true,
-  ['Private Code'] = {"nBlPHArNcx"}
-}
+getgenv().PrivateCode = nBlPHArNcx""
+getgenv().TradeHub = false
 getgenv().Sea = 1
 script_key="yjXgqkaIFaSWfjDqPkOWiZdRMPYajdiK";
 pcall(function()
