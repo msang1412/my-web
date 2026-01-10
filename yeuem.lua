@@ -6,10 +6,10 @@ getgenv().Config = {
     ['Kaitun Mythical Chest'] = true,
     ['Acc Desync'] = false,
     ['Settings'] = {
-        ['Discord ID'] = '814454014171021322',
+        ['Discord ID'] = '1213692707214598184',
         ['PS Delay'] = 36,
         ['FPS'] = 25,
-        ['GUI'] = false
+        ['GUI'] = true
     },
     ['Merchant'] = {
         ['Rare Fruit Chest'] = false,
