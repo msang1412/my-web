@@ -9,7 +9,7 @@ getgenv().Config = {
         ['Discord ID'] = '814454014171021322',
         ['PS Delay'] = 36,
         ['FPS'] = 25,
-        ['GUI'] = true
+        ['GUI'] = false
     },
     ['Merchant'] = {
         ['Rare Fruit Chest'] = false,
