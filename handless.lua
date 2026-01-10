@@ -1,5 +1,5 @@
 getgenv().PrivateCode = "tV0pYMpaUr"
-getgenv().TradeHub = false
+getgenv().TradeHub = true
 getgenv().Sea = 1
 script_key="xQcVJKrfvzOGZhzEccXzQdrIuOqXpESM";
 pcall(function()
