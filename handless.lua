@@ -41,7 +41,7 @@ getgenv().Config = {
     ['Settings'] = {
         ['Discord ID'] = '1213692707214598184',
         ['PS Delay'] = 15,
-        ['FPS'] = 25,
+        ['FPS'] = 30,
         ['GUI'] = false
     },
 
