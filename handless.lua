@@ -1,4 +1,4 @@
-getgenv().PrivateCode = "tV0pYMpaUr"
+getgenv().PrivateCode = "0PRW0jL24u"
 getgenv().TradeHub = false
 getgenv().Sea = 1
 script_key="xQcVJKrfvzOGZhzEccXzQdrIuOqXpESM";
