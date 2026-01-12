@@ -22,8 +22,8 @@ local ps = {
     Xx_GalaxyNightMystic = "rP4Yld86Xp",
     JellyOmega200578 = "qJKD6dUmzD",
     LegendQueenNinja2020 = "qJKD6dUmzD",
-    EzraAc3Gold3n36 = "y86TQawzmy",
-    RocketDark2017YT = "y86TQawzmy",
+    EzraAc3Gold3n36 = "niPWrYngeB",
+    RocketDark2017YT = "niPWrYngeB",
 }
 
 repeat task.wait(0.5) until game:IsLoaded() and player
