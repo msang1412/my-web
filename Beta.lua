@@ -1,5 +1,5 @@
 local Show_Button = true -- Shows the button for toggle fluent ui manually. If "false", works only on mobile, if "true", works everytime.
-local Button_Icon = "rbxassetid://106462089434269" -- Icon of the button for toggle fluent ui
+local Button_Icon = "rbxassetid://94883123849826" -- Icon of the button for toggle fluent ui
 
 local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
