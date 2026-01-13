@@ -2,9 +2,9 @@ repeat wait(0.5) until game:IsLoaded() and game.Players.LocalPlayer
 getgenv().Key = "Radiant_814454014171021322"
 getgenv().Speed = 50
 getgenv().Config = {
-    ['Multi Acc'] = 5,
+    ['Multi Acc'] = 16,
     ['Kaitun Mythical Chest'] = true,
-    ['Acc Desync'] = false,
+    ['Acc Desync'] = true,
     ['Settings'] = {
         ['Discord ID'] = '1213692707214598184',
         ['PS Delay'] = 36,
