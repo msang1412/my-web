@@ -18,7 +18,7 @@ getgenv().Config = {
     ['Private Server'] = true,
     ['Private Code'] = 'ezwFiTEd1U',
     ['Tracker'] = false,
-    ['Webhook'] = 'https://discord.com/api/webhooks/1317008318979506186/7cHRjfhewaO7_F7AlFpOHNbL5t1272e_VZ3aQv1AV7j9ya0ea-dbsGmhs86IZCpODptT'
+    ['Webhook'] = 'https://discord.com/api/webhooks/1427165577062907905/rGwYS7OxDUNMrklxydhZYLxM0pxQ_Z97NzKdVYhjupcDsuOUtzFh4Kc3_D1CFbbV3aGw'
 }
 task.delay(60, function() if not getgenv().Loaded then game:GetService("TeleportService"):Teleport(game.PlaceId) end end)
 repeat task.wait(5)
