@@ -1,14 +1,5 @@
---[[             |
-'                |   Last changes:     
-FluentPlus 1.2.2 |   06.03 - Fixed some themes and mobile button, added normal bypass to Fisch. (it isn't working)
-dsc.gg/hydrahub  |   31.01 - added Show_Assets toggle. Soon ill make normal bypass.
-'                |   29.01 - well well well removed last update, added "Bloody" theme and fluent-plus settings 😉
-]]--    
-
---- FLUENT PLUS SETTINGS ---
 local Show_Button = true -- Shows the button for toggle fluent ui manually. If "false", works only on mobile, if "true", works everytime.
-local Button_Icon = "rbxassetid://75810289554989" -- Icon of the button for toggle fluent ui
-----------------------------
+local Button_Icon = "rbxassetid://106462089434269" -- Icon of the button for toggle fluent ui
 
 local Lighting = game:GetService("Lighting")
 local RunService = game:GetService("RunService")
