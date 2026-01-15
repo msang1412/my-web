@@ -22,8 +22,8 @@ local ps = {
     StreamVortex202042 = "sMDe2GJOpq",
     XxBeastDawnxX40 = "bvhe7iMhIT",
     XxJax0nOrbitxX2008YT = "bvhe7iMhIT",
-    Daniel_Dancer2014YT = "C1bFhzo7ya",
-    Bane_Wraith38 = "C1bFhzo7ya",
+    Daniel_Dancer2014YT = "AauA5M4PWH",
+    Bane_Wraith38 = "AauA5M4PWH",
 }
 
 repeat task.wait(0.5) until game:IsLoaded() and player
