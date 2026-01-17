@@ -4,8 +4,8 @@ local TeleportService = game:GetService("TeleportService")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
 local ps = {
-    BarSilvrBe56205 = "Ps0H3uah4o",
-    FastSunGal30053 = "Ps0H3uah4o",
+    BarSilvrBe56205 = "1qGGE7HI4T",
+    FastSunGal30053 = "1qGGE7HI4T",
     MatthewSun12422 = "qkyHHfqP4K",
     JosephDusk96776 = "qkyHHfqP4K",
     AubreyPear55632  = "R6Ti8hdgpz",
