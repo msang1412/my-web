@@ -4,8 +4,8 @@ local TeleportService = game:GetService("TeleportService")
 local player = Players.LocalPlayer or Players.PlayerAdded:Wait()
 
 local ps = {
-    PebbleRevelation = "1qGGE7HI4T",
-    MysticDenise = "1qGGE7HI4T",
+    PebbleRevelation = "1g0bm5LZwN",
+    MysticDenise = "1g0bm5LZwN",
     DevilTadhg = "uuTCRsPD0h",
     SimicRebecca = "uuTCRsPD0h",
     OpportunityMountain  = "nBlPHArNcx",
