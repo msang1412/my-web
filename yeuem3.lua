@@ -8,7 +8,7 @@ getgenv().Config = {
     ['Settings'] = {
         ['Discord ID'] = '1213692707214598184',
         ['PS Delay'] = 36,
-        ['FPS'] = 15,
+        ['FPS'] = 20,
         ['GUI'] = false
     },
     ['Merchant'] = {
