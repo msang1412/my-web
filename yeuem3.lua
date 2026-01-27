@@ -20,8 +20,8 @@ local ps = {
     HiddenBetty = "flNdJ4YOcM",
     SupernovaAlistair = "ezwFiTEd1U",
     reefSandra = "ezwFiTEd1U",
-    OceanheartData = "bvhe7iMhIT",
-    fizzleGregory = "bvhe7iMhIT",
+    OceanheartData = "e33s7WI34q",
+    fizzleGregory = "e33s7WI34q",
     LeviathanBruce = "AauA5M4PWH",
     QuartzWalter = "AauA5M4PWH",
 }
