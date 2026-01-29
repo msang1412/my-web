@@ -16,7 +16,7 @@ getgenv().Config = {
         ['Legendary Fruit Chest'] = false,
     },
     ['Private Server'] = true,
-    ['Private Code'] = 'ezwFiTEd1U',
+    ['Private Code'] = 'nBlPHArNcx',
     ['Tracker'] = false,
     ['Webhook'] = 'https://discord.com/api/webhooks/1455129616762015796/ifP9RRYZVuavM61UqkQ76N77inkd7KyPbGy-6v8GuCZ8N_djR3ylUdS3Xywt85db30_F'
 }
